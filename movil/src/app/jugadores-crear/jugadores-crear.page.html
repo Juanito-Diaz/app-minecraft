@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>{{ id_jugador ? 'Editar' : 'Nuevo' }} Jugador</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="jugadorForm" (ngSubmit)="guardarDatos()">
+    <ion-list lines="full">
+      
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input formControlName="username" type="text" placeholder="Ej: Girun"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Nivel XP</ion-label>
+        <ion-input formControlName="nivel_xp" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="stacked">Fecha de Unión</ion-label>
+        <ion-input formControlName="fecha_union" type="date"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <div class="ion-padding-top">
+      <ion-button type="submit" expand="block" [disabled]="!jugadorForm.valid" color="tertiary">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        {{ id_jugador ? 'ACTUALIZAR DATOS' : 'CREAR JUGADOR' }}
+      </ion-button>
+
+      <ion-button *ngIf="id_jugador" (click)="alertEliminar(id_jugador)" color="danger" expand="block" fill="outline" class="ion-margin-top">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        ELIMINAR JUGADOR
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

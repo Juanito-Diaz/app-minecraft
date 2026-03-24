@@ -1,0 +1,22 @@
+<ion-app>
+  <ion-menu contentId="main" type="overlay">
+    <ion-header>
+      <ion-toolbar color="success">
+        <ion-title>Panel de Control</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content style="--background: #121212;">
+      <ion-list style="background: transparent;">
+        <ion-menu-toggle auto-hide="false" *ngFor="let enlace of enlaces">
+          <ion-item [routerLink]="enlace.ruta" routerDirection="root" lines="none" detail="false">
+            <ion-icon slot="start" [name]="enlace.icono" style="color: #2dd36f;"></ion-icon>
+            <ion-label>{{ enlace.texto }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-app>

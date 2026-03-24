@@ -1,0 +1,59 @@
+<app-toolbar nombre="Inventario Global" color="success"></app-toolbar>
+
+<ion-content style="--background: #000000;">
+  
+  <ion-searchbar 
+    [debounce]="1000" 
+    (ionInput)="handleInput($event)" 
+    placeholder="Buscar por el nombre del jugador"
+    style="--background: #1e1e1e; --color: #ffffff;">
+  </ion-searchbar>
+
+  <ion-list lines="full" style="background: #000000; padding: 0;">
+    <ion-item *ngFor="let inv of listaInventarios" 
+              style="--background: #000000; --color: #ffffff; --border-color: #333;">
+      
+      <ion-icon name="cube-outline" slot="start" style="color: #f4a460; font-size: 24px;"></ion-icon>
+      
+      <ion-label>
+        <h2 style="color: #ffffff; font-weight: bold;">
+          {{ inv.jugador?.username || 'Sin dueño' }}
+        </h2>
+        <p style="color: #a0a0a0;">
+          <ion-text color="success">{{ inv.item?.nombre }}</ion-text> | 
+          <ion-text color="warning">Cant: {{ inv.cantidad }}</ion-text>
+        </p>
+      </ion-label>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="irAlDetalle(inv.id)" style="--color: #3880ff;">
+          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="abrirModalCrear(inv.id)" style="--color: #ffc409;">
+          <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="alertEliminar(inv.id)" style="--color: #eb445a;">
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+    </ion-item>
+  </ion-list>
+
+  <div style="margin-top: 20px; margin-bottom: 80px;">
+    <app-paginacion 
+      *ngIf="total > 0"
+      [total]="total" 
+      [porPagina]="20" 
+      (click)="pagina($event)">
+    </app-paginacion>
+    <p *ngIf="total === 0" class="ion-text-center" style="color: #666;">No se encontraron inventarios.</p>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="abrirModalCrear()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

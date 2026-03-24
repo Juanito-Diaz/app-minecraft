@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-toolbar style="--background: #ff4444; --color: #000;">
+        <ion-title class="ion-text-center">
+            {{ id ? 'Editar Mob' : 'Nuevo Mob' }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #000; color: white;">
+    <form [formGroup]="mob" (ngSubmit)="guardarDatos()">
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-item style="--background: #1e1e1e; color: white;">
+                        <ion-label position="floating" color="primary">Tipo de Mob</ion-label>
+                        <ion-input type="text" formControlName="tipo"></ion-input>
+                    </ion-item>
+                    <div *ngFor="let validation of mensajes_validacion.tipo">
+                        <ion-note color="danger" *ngIf="getError('tipo')[(validation.type)]">
+                            <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                        </ion-note>
+                    </div>
+                </ion-col>
+
+                <ion-col size="12">
+                    <ion-item style="--background: #1e1e1e; color: white;">
+                        <ion-label position="floating" color="primary">¿Es Hostil?</ion-label>
+                        <ion-select formControlName="es_hostil">
+                            <ion-select-option *ngFor="let op of opcionesHostil" [value]="op.id">
+                                {{ op.label }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+                <ion-col size="12">
+                    <ion-item style="--background: #1e1e1e; color: white;">
+                        <ion-label position="floating" color="primary">Bioma</ion-label>
+                        <ion-select formControlName="id_bioma">
+                            <ion-select-option *ngFor="let bioma of biomas" [value]="bioma.id">
+                                {{ bioma.nombre }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+                <ion-col size="12" class="ion-text-center" style="margin-top: 30px;">
+                    <ion-button type="submit" [disabled]="!mob.valid" color="danger" style="--color: black; font-weight: bold; width: 45%;">
+                        ACEPTAR
+                    </ion-button>
+                    
+                    <ion-button *ngIf="id" (click)="alertEliminar(id)" color="danger" fill="outline" style="width: 45%; margin-left: 10px;">
+                        <ion-icon name="trash" slot="start"></ion-icon>
+                        ELIMINAR
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
+</ion-content>

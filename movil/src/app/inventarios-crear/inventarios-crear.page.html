@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar style="--background: #2dd36f; --color: #000;">
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ soloLectura ? 'Información del Inventario' : (id ? 'Editar Asignación' : 'Nueva Asignación') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #000000;">
+  
+  <div *ngIf="soloLectura" class="ion-padding">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <ion-icon name="person-circle-outline" style="font-size: 80px; color: #a0a0a0;"></ion-icon>
+      <p style="color: white; margin-top: 5px;">Detalles del Registro</p>
+    </div>
+
+    <ion-list style="background: transparent;">
+      <ion-item style="--background: transparent; --color: white; border-bottom: 0.5px solid #333;">
+        <ion-label>
+          <p style="color: #666; font-size: 0.8em;">ID Interno</p>
+          <h3 style="font-weight: bold; color: white;">{{ id }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item style="--background: transparent; --color: white; border-bottom: 0.5px solid #333;">
+        <ion-label>
+          <p style="color: #666; font-size: 0.8em;">Nombre del Jugador</p>
+          <h3 style="font-weight: bold; color: white;">{{ formulario.id_jugador_nombre || 'No asignado' }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item style="--background: transparent; --color: white; border-bottom: 0.5px solid #333;">
+        <ion-label>
+          <p style="color: #666; font-size: 0.8em;">Ítem / Objeto</p>
+          <h3 style="font-weight: bold; color: white;">{{ formulario.id_item_nombre || 'No asignado' }}</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item style="--background: transparent; --color: white;">
+        <ion-label>
+          <p style="color: #666; font-size: 0.8em;">Cantidad Total</p>
+          <h3 style="font-weight: bold; color: white;">{{ formulario.cantidad }} unidades</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="!soloLectura" class="ion-padding">
+    <ion-list style="background: transparent;">
+      <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px; margin-bottom: 10px;">
+        <ion-label position="stacked" color="primary">Seleccionar Jugador</ion-label>
+        <ion-select [(ngModel)]="formulario.id_jugador">
+          <ion-select-option *ngFor="let j of listaJugadores" [value]="j.id">{{ j.username || j.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px; margin-bottom: 10px;">
+        <ion-label position="stacked" color="primary">Seleccionar Ítem</ion-label>
+        <ion-select [(ngModel)]="formulario.id_item">
+          <ion-select-option *ngFor="let i of listaItems" [value]="i.id">{{ i.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+        <ion-label position="stacked" color="primary">Cantidad</ion-label>
+        <ion-input type="number" [(ngModel)]="formulario.cantidad"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" color="warning" style="margin-top: 20px; color: black; font-weight: bold;" (click)="guardarDatos()">
+      {{ id ? 'ACTUALIZAR' : 'GUARDAR' }}
+    </ion-button>
+  </div>
+
+</ion-content>

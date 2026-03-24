@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar style="--background: #2dd36f; --color: #000;">
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>{{ id ? 'Editar Bioma' : 'Nuevo Bioma' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="--background: #000;">
+  <form [formGroup]="bioma" (ngSubmit)="guardarDatos()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input formControlName="nombre"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+            <ion-label position="floating">Temperatura</ion-label>
+            <ion-input type="number" step="0.1" formControlName="temperatura"></ion-input>
+          </ion-item>
+          <div *ngFor="let v of mensajes_validacion.temperatura">
+            <ion-note color="danger" *ngIf="bioma.get('temperatura')?.hasError(v.type) && bioma.get('temperatura')?.touched">
+              {{ v.message }}
+            </ion-note>
+          </div>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
+            <ion-label position="floating">Asignar Mundo</ion-label>
+            <ion-select formControlName="id_mundo" style="padding-inline-end: 25px;">
+              <ion-select-option *ngFor="let m of mundos" [value]="m.id">{{ m.nombre }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-button expand="block" type="submit" [disabled]="!bioma.valid" color="warning" style="--color: black; font-weight: bold; margin-top: 20px;">
+            {{ id ? 'ACTUALIZAR' : 'GUARDAR' }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

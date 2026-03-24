@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar style="--background: #7044ff; --color: #fff;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/items-listado" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Codex: {{ item?.nombre || 'Cargando...' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" style="--background: #0a0a0a;">
+
+  <div *ngIf="item">
+    <div style="text-align: center; padding: 20px 0;">
+      <div style="background: rgba(112, 68, 255, 0.1); width: 120px; height: 120px; border-radius: 30px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border: 2px solid #7044ff; transform: rotate(45deg);">
+        <ion-icon name="construct" style="font-size: 60px; color: #7044ff; transform: rotate(-45deg);"></ion-icon>
+      </div>
+      <h1 style="color: white; font-weight: bold; font-size: 2.2em; margin-top: 25px;">{{ item.nombre }}</h1>
+      <ion-badge color="tertiary">ID #{{ item.id }}</ion-badge>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card style="background: #1a1a1a; text-align: center; margin: 0; border-radius: 15px;">
+            <ion-card-content>
+              <ion-icon name="flash" color="danger" style="font-size: 2em;"></ion-icon>
+              <h2 style="color: white; font-weight: bold;">{{ item.puntos_ataque || 0 }}</h2>
+              <p style="font-size: 0.7em; color: #888;">Daño Base</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card style="background: #1a1a1a; text-align: center; margin: 0; border-radius: 15px;">
+            <ion-card-content>
+              <ion-icon [name]="item.es_apilable == 1 ? 'copy' : 'stop-circle'" 
+                        [color]="item.es_apilable == 1 ? 'success' : 'medium'" 
+                        style="font-size: 2em;"></ion-icon>
+              <h2 style="color: white; font-weight: bold;">{{ item.es_apilable == 1 ? 'SÍ' : 'NO' }}</h2>
+              <p style="font-size: 0.7em; color: #888;">Apilable</p>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-list-header style="color: #7044ff; margin-top: 20px; font-weight: bold;">POSEEDORES ACTUALES</ion-list-header>
+
+    <div *ngIf="item.inventarios && item.inventarios.length > 0; else sinDuenos">
+      <ion-card *ngFor="let inv of item.inventarios" style="background: #161616; margin: 10px 0; border-radius: 15px; border: 1px solid #222;">
+        <ion-item lines="none" style="--background: transparent; --color: white;">
+          <ion-avatar slot="start" style="border: 1px solid #7044ff;">
+            <img [src]="'https://api.dicebear.com/7.x/avataaars/svg?seed=' + inv.jugador?.username" />
+          </ion-avatar>
+          <ion-label>
+            <h2 style="font-weight: bold;">{{ inv.jugador?.username || 'Desconocido' }}</h2>
+            <p style="color: #2dd36f;">Cantidad: x{{ inv.cantidad }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
+    </div>
+
+    <ng-template #sinDuenos>
+      <div style="text-align: center; padding: 40px; color: #444;">
+        <ion-icon name="alert-circle-outline" style="font-size: 40px; opacity: 0.5;"></ion-icon>
+        <p>Este item no se encuentra en ningún inventario.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="!item" style="text-align: center; margin-top: 50px;">
+    <ion-spinner color="tertiary" name="lines-sharp"></ion-spinner>
+    <p style="color: #7044ff;">Consultando el Codex...</p>
+  </div>
+
+</ion-content>

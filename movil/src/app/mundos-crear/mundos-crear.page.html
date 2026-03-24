@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Configurar Mundo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="mundoForm" (ngSubmit)="guardarDatos()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label position="stacked">Nombre del Mundo</ion-label>
+        <ion-input type="text" formControlName="nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Semilla (Seed)</ion-label>
+        <ion-input type="text" formControlName="semilla"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Dificultad</ion-label>
+        <ion-select formControlName="dificultad" interface="popover">
+          <ion-select-option *ngFor="let d of dificultades" [value]="d.id">
+            {{ d.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button type="submit" [disabled]="!mundoForm.valid" expand="block" color="success">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        GUARDAR MUNDO
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

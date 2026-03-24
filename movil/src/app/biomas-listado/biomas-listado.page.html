@@ -1,0 +1,57 @@
+<app-toolbar nombre="Biomas de Minecraft" color="success"></app-toolbar>
+
+<ion-content style="--background: #000000;">
+
+  <ion-searchbar 
+    [debounce]="1000" 
+    (ionInput)="handleInput($event)" 
+    placeholder="Buscar bioma..."
+    style="--background: #1e1e1e; --color: #ffffff; padding: 10px;">
+  </ion-searchbar>
+
+  <ion-list style="background: transparent; padding: 10px;">
+    
+    <ion-item *ngFor="let bioma of biomas" 
+              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
+      
+      <ion-avatar slot="start" style="background: #2dd36f22; padding: 8px;">
+        <ion-icon name="earth-outline" style="font-size: 24px; color: #2dd36f;"></ion-icon>
+      </ion-avatar>
+
+      <ion-label class="ion-text-wrap ion-margin-end">
+        <h3 style="font-weight: bold; color: white;">{{ bioma.nombre }}</h3>
+        <p style="color: #a0a0a0;">Temp: {{ bioma.temperatura }}</p>
+      </ion-label>
+
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="['/biomas-detalle', bioma.id]" fill="clear">
+          <ion-icon name="search-outline" style="color: #3880ff; font-size: 20px;"></ion-icon>
+        </ion-button>
+
+        <ion-button (click)="editar(bioma.id)" color="warning" fill="clear">
+          <ion-icon name="pencil-outline" style="font-size: 20px;"></ion-icon>
+        </ion-button>
+
+        <ion-button (click)="alertEliminar(bioma.id, bioma.nombre)" color="danger" fill="clear">
+          <ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+    </ion-item>
+  </ion-list>
+
+  <div style="margin-bottom: 100px;"> 
+    <app-paginacion 
+      *ngIf="total > 0"
+      [total]="total" 
+      [porPagina]="20" 
+      (click)="pagina($event)">
+    </app-paginacion>
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button (click)="new()" style="--background: #2dd36f;">
+      <ion-icon name="add" color="dark"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

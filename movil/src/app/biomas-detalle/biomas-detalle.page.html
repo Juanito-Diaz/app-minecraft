@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar style="--background: #2dd36f; --color: #000;">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/biomas-listado" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ecosistema del Bioma</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="bioma">
+  
+  <div style="text-align: center; margin-bottom: 25px;">
+    <ion-icon name="leaf" style="font-size: 70px; color: #2dd36f;"></ion-icon>
+    <h1 style="font-weight: bold; margin-top: 5px; font-size: 1.8em;">{{ bioma.nombre }}</h1>
+    <ion-badge color="warning" style="font-size: 1.1em; padding: 8px 15px; border-radius: 20px;">
+        {{ bioma.temperatura }}°C
+    </ion-badge>
+  </div>
+
+  <ion-card *ngIf="bioma.mundo && bioma.mundo.nombre" style="margin: 0 0 25px 0; border-radius: 15px; box-shadow: none; border: 1px solid #ddd;">
+    <ion-item lines="none">
+      <ion-icon name="planet" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <p style="text-transform: uppercase; font-size: 0.7em; letter-spacing: 1px;">Mundo de Origen</p>
+        <h2 style="font-weight: bold; color: #3880ff;">{{ bioma.mundo.nombre }}</h2>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-list-header style="padding-left: 0; margin-bottom: 10px;">
+    <ion-label style="font-size: 1.2em; font-weight: bold; color: #444;">Mobs Habitantes</ion-label>
+  </ion-list-header>
+
+  <div *ngIf="bioma.mobs && bioma.mobs.length > 0; else noMobs">
+    <ion-card *ngFor="let mob of bioma.mobs" style="margin: 5px 0; border-radius: 10px; box-shadow: none; border: 1px solid #eee;">
+      <ion-item lines="none">
+        <ion-icon [name]="mob.es_hostil == 1 ? 'skull' : 'heart'" 
+                  [color]="mob.es_hostil == 1 ? 'danger' : 'success'" 
+                  slot="start" style="font-size: 24px;"></ion-icon>
+        <ion-label>
+          <h2 style="font-weight: bold;">{{ mob.tipo }}</h2>
+          <p [style.color]="mob.es_hostil == 1 ? '#eb445a' : '#2dd36f'">
+            {{ mob.es_hostil == 1 ? 'Hostil (Peligro)' : 'Pasivo (Inofensivo)' }}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <ng-template #noMobs>
+    <div style="text-align: center; margin-top: 30px; color: #999;">
+      <ion-icon name="alert-circle-outline" style="font-size: 40px;"></ion-icon>
+      <p>Este bioma parece estar deshabitado por ahora.</p>
+    </div>
+  </ng-template>
+
+</ion-content>

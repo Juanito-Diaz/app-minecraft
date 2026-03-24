@@ -1,0 +1,42 @@
+ion-menu {
+    --width: 280px;
+    
+    ion-content {
+        --background: #121212; // Fondo oscuro profundo
+    }
+}
+
+ion-toolbar {
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+}
+
+ion-title {
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+ion-item {
+    --background: transparent;
+    --color: #ffffff;
+    --border-radius: 10px;
+    margin: 8px 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &::part(native) {
+        padding-left: 15px;
+    }
+
+    &:hover {
+        --background: #2dd36f22; // Brillo verde suave al pasar el mouse
+        color: #2dd36f;
+    }
+}
+
+// Estilo para el item cuando está activo (ruta actual)
+.selected {
+    --background: #2dd36f;
+    --color: #000000;
+}
