@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=minecraftdb',
-    'username' => 'root',
-    'password' => 'root',
-    'charset' => 'utf8',
+    "class" => "yii\db\Connection",
+    "dsn" => "mysql:host=localhost;dbname=minecraftdb",
+    "username" => "root",
+    "password" => "television07",
+    "charset" => "utf8",
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
