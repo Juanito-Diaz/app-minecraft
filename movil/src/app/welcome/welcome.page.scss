@@ -1,0 +1,50 @@
+.header-banner {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #1e1e1e 0%, #000 100%);
+  border-bottom: 2px solid #4da6ff;
+  margin-bottom: 20px;
+
+  .minecraft-title {
+    font-family: 'Minecraft', sans-serif;
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 2px 22px 0px rgba(0,0,0,0.2);
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    color: #4da6ff;
+    font-weight: bold;
+    letter-spacing: 4px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+}
+
+.footer-info {
+  text-align: center;
+  padding: 20px;
+  p {
+    color: #555;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('https://fonts.cdnfonts.com/s/14894/Minecraft.woff') format('woff');
+}
+
+ion-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  transition: transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

@@ -1,0 +1,28 @@
+<app-toolbar nombre="Inicio" color="primary"></app-toolbar>
+
+<ion-content style="--background: #000;">
+  <div class="header-banner">
+    <h1 class="minecraft-title">MINECRAFT</h1>
+    <p class="subtitle">Panel de Control</p>
+  </div>
+
+  <ion-list style="background: transparent; padding: 15px;">
+    <ion-item *ngFor="let enlace of enlaces" 
+              (click)="navigateTo(enlace.ruta)"
+              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none; cursor: pointer;">
+      
+      <ion-icon [name]="enlace.icono" slot="start" style="color: #4da6ff; font-size: 24px;"></ion-icon>
+      
+      <ion-label>
+        <h2 style="font-weight: bold; color: #4da6ff;">{{ enlace.texto }}</h2>
+        <p style="color: #a0a0a0;">Gestionar {{ enlace.texto.toLowerCase() }} del servidor</p>
+      </ion-label>
+
+      <ion-icon name="chevron-forward-outline" slot="end" style="color: #3880ff;"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <div class="footer-info">
+    <p>v1.0.0 | Juanito Diaz</p>
+  </div>
+</ion-content>

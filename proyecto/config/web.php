@@ -25,7 +25,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Jugadores',
             'enableAutoLogin' => true,
             'enableSession'   => false,
             'loginUrl'        => null
@@ -97,6 +97,8 @@ $config = [
                     ],
                     'extraPatterns' => [
                         'GET total' => 'total',
+                        'POST login' => 'login',
+                        'POST registrar' => 'registrar',
                     ],
                 ],
 

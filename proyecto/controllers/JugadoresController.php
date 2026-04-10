@@ -6,6 +6,9 @@ use yii\rest\ActiveController;
 use yii\db\Expression;
 use yii\data\ActiveDataProvider; // Importante para actionBuscar
 use app\models\Jugadores;
+use app\models\LoginForm;
+use app\models\RegistroForm;
+use Yii;
 
 class JugadoresController extends ActiveController
 {
@@ -33,7 +36,7 @@ class JugadoresController extends ActiveController
                 \yii\filters\auth\HttpBearerAuth::className(),
             ],
             // CLAVE: Se agregan 'total' y 'buscar' a las excepciones
-            'except' => ['index', 'view', 'total', 'buscar']
+            'except' => ['index', 'view', 'total', 'buscar', 'login', 'registrar']
         ];
 
         return $behaviors;
@@ -75,5 +78,40 @@ class JugadoresController extends ActiveController
             ]);
         }
         return $total->count();
+    }
+
+    public function actionLogin() {
+        $token = '';
+        $model = new LoginForm();
+        $model->load(Yii::$app->getRequest()->getBodyParams(), '');
+        if($model->login()) {
+            $user = Jugadores::findOne(['username' => $model->username]);
+            $token = $user->access_token;
+        }
+        return $token;
+    }
+
+    public function actionRegistrar() { 
+        $token = '';
+        $model = new RegistroForm();
+        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->validate()) {
+            $user = new Jugadores();
+            $user->username = $model->username;
+            $user->setPassword($model->password);
+            $user->generateAuthKey();
+            // Yii's HttpBearerAuth uses access_token
+            $user->access_token = Yii::$app->security->generateRandomString();
+            
+            if($user->save()) {
+                $token = $user->access_token;
+            } else {
+                Yii::$app->response->statusCode = 422;
+                return $user->errors;
+            }
+        } else {
+            Yii::$app->response->statusCode = 422;
+            return $model->errors;
+        }
+        return $token;
     }
 }

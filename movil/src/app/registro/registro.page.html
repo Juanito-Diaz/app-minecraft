@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="login()">
+        <ion-icon name="arrow-back-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Crear Jugador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding" style="text-align: center;">
+    <div style="font-size: 3rem; color: #5a8f34;">
+      <ion-icon name="person-add-outline"></ion-icon>
+    </div>
+    <p>Únete a nuestro Servidor de Minecraft</p>
+  </div>
+
+  <form [formGroup]="registro" (ngSubmit)="submitRegistrar()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating" color="primary">Usuario de Minecraft</ion-label>
+            <ion-input type="text" formControlName="username" class="form-control"></ion-input>
+          </ion-item>
+          <div id="note" *ngFor="let validation of validation_messages.username">
+            <ion-note color="danger" *ngIf="getError('username')[(validation.type)]">
+              <ion-icon name="information-circle-outline"></ion-icon> {{validation.message }}
+            </ion-note>
+          </div>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating" color="primary">Contraseña</ion-label>
+            <ion-input #passwordEyeRegister [type]="passwordTypeInput" formControlName="password" clearOnEdit="false" class="form-control"></ion-input>
+            <button slot="end" class="btn_eye_icon" (click)="togglePasswordMode($event)" style="background: transparent; border: none; font-size: 1.5rem; margin-top: 15px;">
+              <ion-icon [name]="(passwordTypeInput === 'text')?'eye-off':'eye'"></ion-icon>
+            </button>
+          </ion-item>
+          <div id="note" *ngFor="let validation of validation_messages.password">
+            <ion-note color="danger" *ngIf="getError('password')[(validation.type)]">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </ion-note>
+          </div>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating" color="primary">Confirmar Contraseña</ion-label>
+            <ion-input [type]="passwordTypeInput" formControlName="password_confirm" clearOnEdit="false" class="form-control"></ion-input>
+          </ion-item>
+          <div id="note" *ngFor="let validation of validation_messages.password_confirm">
+            <ion-note color="danger" *ngIf="getError('password_confirm')[(validation.type)]">
+              <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+            </ion-note>
+          </div>
+        </ion-col>
+        <ion-col size="12">
+          <p class="ion-text-center">
+            <ion-button type="submit" expand="block" shape="round" color="success" [disabled]="!registro.valid">Registrarse</ion-button>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
