@@ -1,0 +1,110 @@
+.mc-toolbar-title {
+  font-weight: 800;
+  color: #1b5e20;
+  letter-spacing: 1px;
+}
+
+.mc-detail-header {
+  padding: 20px;
+  background: #f8f8f8;
+  margin: 15px 20px;
+  border-left: 6px solid #1b5e20;
+
+  .mc-header-container {
+    padding-left: 10px;
+  }
+
+  .mc-overline {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #8d6e63;
+    margin: 0 0 5px 0;
+    letter-spacing: 1.5px;
+  }
+
+  .mc-main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.1;
+    margin: 0;
+  }
+}
+
+.mc-info-grid {
+  margin: 10px 20px;
+  display: flex;
+  flex-direction: column;
+
+  .mc-info-block {
+    padding: 20px;
+    
+    &.block-white { background: #ffffff; }
+    &.block-grey { background: #f4f4f4; }
+    &.block-dark-grey { background: #e9e9e9; }
+
+    .mc-info-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #8d6e63;
+      margin: 0 0 5px 0;
+      letter-spacing: 1px;
+    }
+
+    .mc-info-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin: 0;
+    }
+  }
+}
+
+.mc-biomas-section, .mc-players-section {
+  margin: 30px 20px;
+
+  .mc-section-title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .mc-section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .mc-title-line {
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+  }
+
+  .mc-biomas-list, .mc-players-list {
+    .bioma-item, .player-item {
+      padding: 15px 5px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    .empty-msg {
+      color: #999;
+      font-style: italic;
+      padding: 10px 0;
+    }
+  }
+}
+
+ion-content {
+  --background: #ffffff;
+}

@@ -1,11 +1,17 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar [color]="color">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="dark"></ion-menu-button>
     </ion-buttons>
     
-    <ion-title style="font-weight: bold; text-transform: uppercase;">
+    <ion-title class="mc-header-title ion-text-center">
       {{ nombre }}
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button color="dark">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header>

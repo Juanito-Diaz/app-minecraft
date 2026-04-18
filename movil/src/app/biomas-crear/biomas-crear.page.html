@@ -1,50 +1,57 @@
-<ion-header>
-  <ion-toolbar style="--background: #2dd36f; --color: #000;">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cerrar()"><ion-icon name="close-outline"></ion-icon></ion-button>
+      <ion-button (click)="cerrar()" color="success">
+        <ion-icon name="close-outline" style="font-size: 24px; font-weight: 800;"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{ id ? 'Editar Bioma' : 'Nuevo Bioma' }}</ion-title>
+    <ion-title class="mc-toolbar-title">BIOMAS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="--background: #000;">
-  <form [formGroup]="bioma" (ngSubmit)="guardarDatos()">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
-            <ion-label position="floating">Nombre</ion-label>
-            <ion-input formControlName="nombre"></ion-input>
-          </ion-item>
-        </ion-col>
+<ion-content>
+  <!-- Cabecera de Formulario -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">{{ id ? 'EDITAR' : 'NUEVO' }}<br>BIOMA</h1>
+    <div class="mc-divider"></div>
+  </div>
 
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
-            <ion-label position="floating">Temperatura</ion-label>
-            <ion-input type="number" step="0.1" formControlName="temperatura"></ion-input>
-          </ion-item>
-          <div *ngFor="let v of mensajes_validacion.temperatura">
-            <ion-note color="danger" *ngIf="bioma.get('temperatura')?.hasError(v.type) && bioma.get('temperatura')?.touched">
-              {{ v.message }}
-            </ion-note>
-          </div>
-        </ion-col>
+  <div class="ion-padding">
+    <form [formGroup]="bioma" (ngSubmit)="guardarDatos()">
+      
+      <div class="mc-form-group">
+        <label class="mc-label">NOMBRE DEL BIOMA</label>
+        <ion-input type="text" formControlName="nombre" class="mc-input-field" placeholder="Ej. Llanuras Heladas"></ion-input>
+      </div>
 
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px;">
-            <ion-label position="floating">Asignar Mundo</ion-label>
-            <ion-select formControlName="id_mundo" style="padding-inline-end: 25px;">
-              <ion-select-option *ngFor="let m of mundos" [value]="m.id">{{ m.nombre }}</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
+      <div class="mc-form-group">
+        <label class="mc-label">TEMPERATURA (°C)</label>
+        <ion-input type="number" step="0.1" formControlName="temperatura" class="mc-input-field" placeholder="Ej. 12.5"></ion-input>
+        <div *ngFor="let v of mensajes_validacion.temperatura">
+          <p class="mc-error-msg" *ngIf="bioma.get('temperatura')?.hasError(v.type) && bioma.get('temperatura')?.touched">
+            {{ v.message }}
+          </p>
+        </div>
+      </div>
 
-        <ion-col size="12">
-          <ion-button expand="block" type="submit" [disabled]="!bioma.valid" color="warning" style="--color: black; font-weight: bold; margin-top: 20px;">
-            {{ id ? 'ACTUALIZAR' : 'GUARDAR' }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+      <div class="mc-form-group">
+        <label class="mc-label">ASIGNAR MUNDO</label>
+        <ion-select formControlName="id_mundo" interface="popover" placeholder="Seleccionar Mundo..." class="mc-select-field">
+          <ion-select-option *ngFor="let m of mundos" [value]="m.id">{{ m.nombre }}</ion-select-option>
+        </ion-select>
+      </div>
+
+      <div class="mc-form-actions">
+        <button type="submit" 
+                [disabled]="!bioma.valid"
+                class="mc-btn btn-primary">
+          {{ id ? 'ACTUALIZAR BIOMA' : 'GUARDAR BIOMA' }}
+        </button>
+
+        <button type="button" (click)="cerrar()" class="mc-btn btn-danger">
+          CANCELAR
+        </button>
+      </div>
+    </form>
+  </div>
 </ion-content>

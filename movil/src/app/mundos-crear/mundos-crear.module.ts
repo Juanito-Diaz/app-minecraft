@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { MundosCrearPageRoutingModule } from './mundos-crear-routing.module';
 import { MundosCrearPage } from './mundos-crear.page';
+import { ToolbarModule } from '../components/toolbar/toolbar.module';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { MundosCrearPage } from './mundos-crear.page';
     FormsModule,
     IonicModule,
     MundosCrearPageRoutingModule,
-    ReactiveFormsModule //
+    ReactiveFormsModule,
+    ToolbarModule
   ],
   declarations: [MundosCrearPage] // Asegúrate que diga MundosCrearPage
 })

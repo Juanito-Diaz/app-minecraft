@@ -1,66 +1,42 @@
-<ion-header>
-  <ion-toolbar style="--background: #f4a460; --color: #000;">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inventarios-listado" color="dark"></ion-back-button>
+      <ion-back-button defaultHref="/inventarios-listado" color="success" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Detalle de Posesión</ion-title>
+    <ion-title class="mc-toolbar-title">INVENTARIOS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="--background: #121212; color: white;" *ngIf="registro">
-  
-  <div style="text-align: center; margin-bottom: 30px;">
-    <ion-icon name="cube" style="font-size: 100px; color: #8b4513;"></ion-icon>
-    <h1 style="font-weight: bold; font-size: 2.2em; margin-top: 10px; color: white;">
-      {{ registro.item?.nombre || 'Objeto Desconocido' }}
-    </h1>
-    <ion-badge color="light" style="font-size: 1.5em; padding: 10px 20px; border-radius: 10px; color: black;">
-      x {{ registro.cantidad }}
-    </ion-badge>
+<ion-content *ngIf="registro">
+  <!-- Cabecera Principal -->
+  <div class="mc-detail-header">
+    <div class="mc-header-container">
+      <p class="mc-overline">DETALLES DE POSESIÓN</p>
+      <h1 class="mc-main-title">{{ registro.item?.nombre || 'Objeto Desconocido' }}</h1>
+    </div>
   </div>
 
-  <ion-list-header style="font-weight: bold; color: #2dd36f; letter-spacing: 1px;">PROPIETARIO</ion-list-header>
-  <ion-card style="margin: 0 0 25px 0; border-radius: 15px; background: #1e1e1e;">
-    <ion-item lines="none" style="--background: transparent; --color: white;">
-      <ion-avatar slot="start">
-        <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-      </ion-avatar>
-      <ion-label>
-        <h2 style="font-weight: bold;">{{ registro.jugador?.username }}</h2>
-        <p style="color: #aaa;">Nivel de XP: {{ registro.jugador?.nivel_xp || 0 }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-card>
+  <!-- Bloques de Información -->
+  <div class="mc-info-grid">
+    <div class="mc-info-block block-white">
+      <p class="mc-info-label">CANTIDAD</p>
+      <p class="mc-info-value">{{ registro.cantidad }}</p>
+    </div>
+    
+    <div class="mc-info-block block-grey">
+      <p class="mc-info-label">PROPIETARIO</p>
+      <p class="mc-info-value">{{ registro.jugador?.username }} (Nvl. {{ registro.jugador?.nivel_xp || 0 }})</p>
+    </div>
 
-  <ion-list-header style="font-weight: bold; color: #3880ff; letter-spacing: 1px;">ATRIBUTOS DEL ÍTEM</ion-list-header>
-  
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6">
-        <ion-card style="margin: 0; background: #1e1e1e; text-align: center; padding: 15px;">
-          <ion-icon name="flash" style="font-size: 2em; color: #eb445a;"></ion-icon>
-          <h3 style="margin: 10px 0 0 0; color: white; font-weight: bold;">{{ registro.item?.puntos_ataque || 0 }}</h3>
-          <p style="margin: 0; font-size: 0.8em; color: #888;">Daño</p>
-        </ion-card>
-      </ion-col>
+    <div class="mc-info-block block-dark-grey">
+      <p class="mc-info-label">DAÑO DEL ÍTEM</p>
+      <p class="mc-info-value">{{ registro.item?.puntos_ataque || 0 }}</p>
+    </div>
 
-      <ion-col size="6">
-        <ion-card style="margin: 0; background: #1e1e1e; text-align: center; padding: 15px;">
-          <ion-icon [name]="registro.item?.es_apilable ? 'layers' : '禁-outline'" 
-                    [style.color]="registro.item?.es_apilable ? '#2dd36f' : '#888'"></ion-icon>
-          <h3 style="margin: 10px 0 0 0; color: white; font-weight: bold;">
-            {{ registro.item?.es_apilable ? 'Sí' : 'No' }}
-          </h3>
-          <p style="margin: 0; font-size: 0.8em; color: #888;">Apilable</p>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-item lines="none" style="--background: transparent; margin-top: 20px;">
-    <ion-label style="text-align: center; color: #444; font-size: 0.8em;">
-      ID DE REGISTRO INTERNO: #{{ registro.id }}
-    </ion-label>
-  </ion-item>
+    <div class="mc-info-block block-white">
+      <p class="mc-info-label">ES APILABLE</p>
+      <p class="mc-info-value">{{ registro.item?.es_apilable ? 'SÍ' : 'NO' }}</p>
+    </div>
+  </div>
 
 </ion-content>

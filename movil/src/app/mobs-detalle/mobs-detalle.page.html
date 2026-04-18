@@ -1,62 +1,46 @@
-<ion-header>
-  <ion-toolbar [style.--background]="mob?.es_hostil ? '#eb445a' : '#2dd36f'" style="--color: #fff;">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mobs-listado" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/mobs-listado" color="success" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Bestiario: {{ mob?.tipo }}</ion-title>
+    <ion-title class="mc-toolbar-title">MOBS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="--background: #121212;">
+<ion-content *ngIf="mob">
+  <!-- Cabecera Principal -->
+  <div class="mc-detail-header" [style.border-left]="mob.es_hostil ? '6px solid #c0392b' : '6px solid #2a7a4a'">
+    <div class="mc-header-container">
+      <p class="mc-overline">BESTIARIO</p>
+      <h1 class="mc-main-title">{{ mob.tipo }}</h1>
+    </div>
+  </div>
 
-  <div *ngIf="mob">
-    <div style="text-align: center; padding: 30px 0;">
-      <ion-icon [name]="mob.es_hostil ? 'skull-outline' : 'leaf-outline'" 
-                [style.color]="mob.es_hostil ? '#eb445a' : '#2dd36f'"
-                style="font-size: 100px;"></ion-icon>
-      <h1 style="color: white; font-weight: bold; font-size: 2.2em; margin-top: 10px;">{{ mob.tipo }}</h1>
-      <ion-badge [color]="mob.es_hostil ? 'danger' : 'success'" mode="ios">
-        {{ mob.es_hostil ? 'ENTIDAD HOSTIL' : 'ENTIDAD PACÍFICA' }}
-      </ion-badge>
+  <!-- Bloques de Información -->
+  <div class="mc-info-grid">
+    <div class="mc-info-block block-white">
+      <p class="mc-info-label" [style.color]="mob.es_hostil ? '#c0392b' : '#2a7a4a'">COMPORTAMIENTO</p>
+      <p class="mc-info-value">{{ mob.es_hostil ? 'HOSTIL' : 'PASIVO' }}</p>
+    </div>
+    
+    <div class="mc-info-block block-grey">
+      <p class="mc-info-label">BIOMA HABITUAL</p>
+      <p class="mc-info-value">{{ mob.bioma?.nombre || 'Desconocido' }}</p>
     </div>
 
-    <ion-list-header style="color: #666; letter-spacing: 1px; font-size: 0.9em; font-weight: bold;">
-      UBICACIÓN GEOGRÁFICA
-    </ion-list-header>
-    
-    <ion-card style="background: #1e1e1e; margin: 10px 0; border-radius: 12px; border-left: 4px solid #3880ff;">
-      <ion-item lines="none" style="--background: transparent; --color: white;">
-        <ion-icon name="map-outline" slot="start" color="primary"></ion-icon>
-        <ion-label>
-          <h2 style="font-weight: bold;">Bioma: {{ mob.bioma?.nombre || 'Desconocido' }}</h2>
-          <p style="color: #3880ff; display: flex; align-items: center;">
-            <ion-icon name="thermometer-outline" style="margin-right: 5px;"></ion-icon>
-            Temperatura: {{ mob.bioma?.temperatura || 0 }}°C
-          </p>
-        </ion-label>
-      </ion-item>
-    </ion-card>
+    <div class="mc-info-block block-dark-grey">
+      <p class="mc-info-label">TEMPERATURA DEL BIOMA</p>
+      <p class="mc-info-value">{{ mob.bioma?.temperatura || 0 }}°C</p>
+    </div>
 
-    <ion-grid style="margin-top: 20px;">
-      <ion-row>
-        <ion-col size="6">
-          <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #333;">
-            <p style="color: #666; font-size: 0.7em; margin: 0; text-transform: uppercase;">ID Entidad</p>
-            <h3 style="color: white; margin: 5px 0; font-weight: bold;">#{{ mob.id }}</h3>
-          </div>
-        </ion-col>
-        <ion-col size="6">
-          <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #333;">
-            <p style="color: #666; font-size: 0.7em; margin: 0; text-transform: uppercase;">Ref Bioma</p>
-            <h3 style="color: white; margin: 5px 0; font-weight: bold;">#{{ mob.id_bioma }}</h3>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div class="mc-info-block block-white" style="margin-top: 15px;">
+      <p class="mc-info-label">ID ENTIDAD</p>
+      <p class="mc-info-value">#{{ mob.id }}</p>
+    </div>
   </div>
 
-  <div *ngIf="!mob" style="text-align: center; margin-top: 100px;">
-    <ion-spinner name="bubbles" color="danger"></ion-spinner>
-  </div>
+</ion-content>
 
+<ion-content *ngIf="!mob" class="ion-padding">
+  <p style="text-align: center; color: #666;">Cargando bestiario...</p>
 </ion-content>

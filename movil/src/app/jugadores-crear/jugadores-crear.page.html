@@ -1,45 +1,49 @@
-<ion-header>
-  <ion-toolbar color="tertiary">
-    <ion-title>{{ id_jugador ? 'Editar' : 'Nuevo' }} Jugador</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cerrar()">
-        <ion-icon name="close"></ion-icon>
+      <ion-button (click)="cerrar()" color="success">
+        <ion-icon name="close-outline" style="font-size: 24px; font-weight: 800;"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-title class="mc-toolbar-title">JUGADORES</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="jugadorForm" (ngSubmit)="guardarDatos()">
-    <ion-list lines="full">
+<ion-content>
+  <div class="mc-section-header">
+    <h1 class="mc-title">{{ id_jugador ? 'EDITAR' : 'NUEVO' }}<br>JUGADOR</h1>
+    <div class="mc-divider"></div>
+  </div>
+
+  <div class="ion-padding">
+    <form [formGroup]="jugadorForm" (ngSubmit)="guardarDatos()">
       
-      <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Username</ion-label>
-        <ion-input formControlName="username" type="text" placeholder="Ej: Girun"></ion-input>
-      </ion-item>
+      <div class="mc-form-group">
+        <label class="mc-label">USERNAME</label>
+        <ion-input type="text" formControlName="username" class="mc-input-field" placeholder="Ej. Girun"></ion-input>
+      </div>
 
-      <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Nivel XP</ion-label>
-        <ion-input formControlName="nivel_xp" type="number"></ion-input>
-      </ion-item>
+      <div class="mc-form-group">
+        <label class="mc-label">NIVEL XP</label>
+        <ion-input type="number" formControlName="nivel_xp" class="mc-input-field"></ion-input>
+      </div>
 
-      <ion-item class="ion-margin-bottom">
-        <ion-label position="stacked">Fecha de Unión</ion-label>
-        <ion-input formControlName="fecha_union" type="date"></ion-input>
-      </ion-item>
+      <div class="mc-form-group">
+        <label class="mc-label">FECHA DE UNIÓN</label>
+        <ion-input type="date" formControlName="fecha_union" class="mc-input-field"></ion-input>
+      </div>
 
-    </ion-list>
+      <div class="mc-form-actions">
+        <button type="submit" 
+                [disabled]="!jugadorForm.valid"
+                class="mc-btn btn-primary">
+          {{ id_jugador ? 'ACTUALIZAR DATOS' : 'CREAR JUGADOR' }}
+        </button>
 
-    <div class="ion-padding-top">
-      <ion-button type="submit" expand="block" [disabled]="!jugadorForm.valid" color="tertiary">
-        <ion-icon name="save-outline" slot="start"></ion-icon>
-        {{ id_jugador ? 'ACTUALIZAR DATOS' : 'CREAR JUGADOR' }}
-      </ion-button>
-
-      <ion-button *ngIf="id_jugador" (click)="alertEliminar(id_jugador)" color="danger" expand="block" fill="outline" class="ion-margin-top">
-        <ion-icon name="trash-outline" slot="start"></ion-icon>
-        ELIMINAR JUGADOR
-      </ion-button>
-    </div>
-  </form>
+        <button *ngIf="id_jugador" type="button" (click)="alertEliminar(id_jugador)" class="mc-btn btn-danger" style="background:#ffdada; border-bottom:4px solid #c0392b;">
+          ELIMINAR JUGADOR
+        </button>
+      </div>
+    </form>
+  </div>
 </ion-content>

@@ -1,58 +1,52 @@
-<app-toolbar nombre="Catálogo de Items" color="success"></app-toolbar>
+<app-toolbar nombre="Ítems" color="light"></app-toolbar>
 
-<ion-content style="--background: #000000;">
-  
-  <ion-searchbar 
-    [debounce]="1000" 
-    (ionInput)="handleInput($event)" 
-    placeholder="Buscar ítem..."
-    style="--background: #1e1e1e; --color: #ffffff; padding: 10px;">
-  </ion-searchbar>
-
-  <ion-list style="background: transparent; padding: 10px;">
-    
-    <ion-item *ngFor="let item of items" 
-              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
-      
-      <ion-avatar slot="start" style="background: #2dd36f22; padding: 8px;">
-        <ion-icon name="hammer-outline" style="font-size: 24px; color: #2dd36f;"></ion-icon>
-      </ion-avatar>
-
-      <ion-label>
-        <h2 style="font-weight: bold;">{{ item.nombre }}</h2>
-        <p style="color: #a0a0a0;">Ataque: {{ item.puntos_ataque }} pts</p>
-        <p style="color: #666; font-size: 0.8em;">Apilable: {{ item.es_apilable ? 'Sí' : 'No' }}</p>
-      </ion-label>
-
-      <ion-buttons slot="end">
-        <ion-button (click)="irAlDetalle(item.id)" style="--color: #3880ff;">
-          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        
-        <ion-button (click)="abrirFormulario(item.id)" style="--color: #ffc409;">
-          <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-
-        <ion-button (click)="alertEliminar(item.id)" style="--color: #eb445a;">
-          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
-
-  </ion-list>
-
-  <div style="margin-top: 20px; margin-bottom: 80px;">
-    <app-paginacion 
-      *ngIf="total > 0" 
-      [total]="total" 
-      [porPagina]="20" 
-      (click)="pagina($event)">
-    </app-paginacion>
+<ion-content>
+  <!-- Cabecera de Sección -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">CATÁLOGO DE<br>ÍTEMS</h1>
+    <div class="mc-divider"></div>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="abrirFormulario()" style="--background: #2dd36f;">
-      <ion-icon name="add" color="dark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <div class="ion-padding-horizontal">
+    <ion-searchbar 
+      [debounce]="1000" 
+      (ionInput)="handleInput($event)" 
+      placeholder="Buscar ítem..."
+      class="mc-searchbar">
+    </ion-searchbar>
+  </div>
+
+  <!-- Listado -->
+  <div class="mc-container">
+    <div *ngFor="let item of items" class="mc-card">
+      <div class="mc-card-header">
+        <h2 class="mc-card-title">{{ item.nombre }}</h2>
+      </div>
+      
+      <p class="mc-card-seed">ATAQUE: {{ item.puntos_ataque }}</p>
+      <p class="mc-card-seed" style="color: #1b5e20;">APILABLE: {{ item.es_apilable ? 'SÍ' : 'NO' }}</p>
+
+      <div class="mc-card-actions" style="margin-top: 15px;">
+        <button class="mc-btn btn-primary" (click)="irAlDetalle(item.id)">
+          VER DETALLES
+        </button>
+        <button class="mc-btn btn-secondary" (click)="abrirFormulario(item.id)">
+          EDITAR
+        </button>
+        <button class="mc-btn btn-danger" (click)="alertEliminar(item.id)">
+          ELIMINAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  <div class="ion-padding" style="margin-bottom: 80px;">
+    <app-paginacion *ngIf="total > 0" [total]="total" [porPagina]="20" (click)="pagina($event)"></app-paginacion>
+  </div>
+
+  <!-- FAB -->
+  <div class="mc-fab" (click)="abrirFormulario()">
+    <ion-icon name="add"></ion-icon>
+  </div>
 </ion-content>

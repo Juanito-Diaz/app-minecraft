@@ -35,3 +35,195 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* --- Minecraft Design System --- */
+
+:root {
+  --mc-green: #4ade80;
+  --mc-dark-green: #166534;
+  --mc-bg: #f8f9fa;
+  --mc-card-bg: #ffffff;
+  --mc-text-dark: #1a1a1a;
+  --mc-text-muted: #6b7280;
+  --mc-text-orange: #b45309;
+  --mc-btn-grey: #e5e7eb;
+  --mc-btn-red: #fee2e2;
+  --mc-btn-red-text: #ef4444;
+  --mc-border-color: #e5e7eb;
+}
+
+body {
+  --ion-background-color: var(--mc-bg);
+  font-family: 'Inter', sans-serif; /* O una fuente similar a la de la imagen */
+}
+
+.mc-header-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: var(--mc-dark-green);
+  text-transform: uppercase;
+}
+
+.mc-section-header {
+  padding: 24px 20px 10px;
+  
+  .mc-subtitle {
+    color: var(--mc-green);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .mc-title {
+    color: var(--mc-text-dark);
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin: 0;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .mc-divider {
+    width: 40px;
+    height: 4px;
+    background: var(--mc-green);
+    margin-top: 12px;
+  }
+}
+
+.mc-card {
+  background: var(--mc-card-bg);
+  border-radius: 4px;
+  margin: 16px 20px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid var(--mc-border-color);
+  position: relative;
+
+  .mc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .mc-card-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--mc-text-dark);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .mc-badge {
+    background: var(--mc-btn-grey);
+    color: var(--mc-text-dark);
+    padding: 2px 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .mc-card-info {
+    color: var(--mc-text-orange);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .mc-card-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.mc-btn {
+  flex: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+
+  &.btn-grey {
+    background: var(--mc-btn-grey);
+    color: var(--mc-text-muted);
+    border: 1.5px solid #9ca3af;
+  }
+
+  &.btn-red {
+    background: var(--mc-btn-red);
+    color: var(--mc-btn-red-text);
+    border: 1.5px solid var(--mc-btn-red-text);
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.mc-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: var(--mc-green);
+  border: 2px solid var(--mc-dark-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 32px;
+    color: var(--mc-dark-green);
+  }
+}
+
+/* Form Styles */
+.mc-form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--mc-text-dark);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .mc-input {
+    --background: #ffffff;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    border: 1px solid var(--mc-border-color);
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--mc-text-dark);
+    margin-bottom: 15px;
+  }
+
+  ion-select {
+    border: 1px solid var(--mc-border-color);
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: #fff;
+    --placeholder-color: #999;
+  }
+}
+

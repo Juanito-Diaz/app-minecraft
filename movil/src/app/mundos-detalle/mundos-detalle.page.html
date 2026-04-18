@@ -1,75 +1,64 @@
-<ion-header>
-  <ion-toolbar color="success">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mundos-listado"></ion-back-button>
+      <ion-back-button defaultHref="/mundos-listado" color="success" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Información del Mundo</ion-title>
+    <ion-title class="mc-toolbar-title">MUNDOS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding ion-text-center">
-  <div style="margin-top: 20px;">
-    <img src="https://cdn-icons-png.flaticon.com/512/606/606548.png" style="width: 100px;">
-    <p style="font-weight: bold; color: #666;">Información de Mundo de Minecraft</p>
+<ion-content>
+  <!-- Cabecera Principal -->
+  <div class="mc-detail-header">
+    <div class="mc-header-container">
+      <p class="mc-overline">EXPLORANDO</p>
+      <h1 class="mc-main-title">{{ mundo.nombre }}</h1>
+    </div>
   </div>
 
-  <ion-list mode="md" style="margin-bottom: 20px;">
-    <ion-item lines="full">
-      <ion-label>
-        <p>ID Interno</p>
-        <h2 style="font-weight: bold;">{{ mundo.id }}</h2>
-      </ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label>
-        <p>Nombre</p>
-        <h2 style="font-weight: bold;">{{ mundo.nombre }}</h2>
-      </ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label>
-        <p>Semilla (Seed)</p>
-        <h2 style="font-weight: bold;">{{ mundo.semilla }}</h2>
-      </ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-label>
-        <p>Dificultad</p>
-        <h2 style="font-weight: bold;">{{ mundo.dificultad }}</h2>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <!-- Bloques de Información -->
+  <div class="mc-info-grid">
+    <div class="mc-info-block block-white">
+      <p class="mc-info-label">SEED</p>
+      <p class="mc-info-value">{{ mundo.semilla }}</p>
+    </div>
+    
+    <div class="mc-info-block block-grey">
+      <p class="mc-info-label">MODE</p>
+      <p class="mc-info-value">{{ mundo.tipo_mundo || 'Survival' }}</p>
+    </div>
 
-  <div *ngIf="mundo.biomas && mundo.biomas.length > 0">
-    <ion-list-header style="font-size: 1.1em; color: #2dd36f; font-weight: bold; margin-top: 15px; text-align: left;">
-      BIOMAS DESCUBIERTOS
-    </ion-list-header>
-    <ion-item *ngFor="let bioma of mundo.biomas" lines="inset">
-      <ion-icon name="leaf-outline" slot="start" color="success"></ion-icon>
-      <ion-label class="ion-text-left">
-        <h2>{{ bioma.nombre }}</h2>
-        <p>Temperatura: {{ bioma.temperatura }}°C</p>
-      </ion-label>
-    </ion-item>
+    <div class="mc-info-block block-dark-grey">
+      <p class="mc-info-label">DIFICULTAD</p>
+      <p class="mc-info-value">{{ mundo.dificultad }}</p>
+    </div>
   </div>
 
-  <div *ngIf="mundo.jugadors && mundo.jugadors.length > 0" style="margin-top: 20px;">
-    <ion-list-header style="font-size: 1.1em; color: #3880ff; font-weight: bold; text-align: left;">
-      JUGADORES EN ESTE MUNDO
-    </ion-list-header>
-    <ion-item *ngFor="let jugador of mundo.jugadors" lines="inset">
-      <ion-avatar slot="start">
-        <img [src]="'https://avatar.iran.liara.run/public/boy?username=' + jugador.username" />
-      </ion-avatar>
-      <ion-label class="ion-text-left">
-        <h2 style="font-weight: bold;">{{ jugador.username }}</h2>
-        <p>Experiencia: {{ jugador.nivel_xp }} XP</p>
-      </ion-label>
-    </ion-item>
+  <!-- Sección de Biomas -->
+  <div class="mc-biomas-section">
+    <div class="mc-section-title-container">
+      <h2 class="mc-section-title">BIOMAS</h2>
+      <div class="mc-title-line"></div>
+    </div>
+
+    <div class="mc-biomas-list">
+      <div *ngFor="let bioma of mundo.biomas" class="bioma-item">
+        {{ bioma.nombre }}
+      </div>
+      <p *ngIf="!mundo.biomas || mundo.biomas.length === 0" class="empty-msg">
+        No hay biomas descubiertos.
+      </p>
+    </div>
   </div>
 
-  <ion-note *ngIf="(!mundo.biomas || mundo.biomas.length === 0) && (!mundo.jugadors || mundo.jugadors.length === 0)" style="display: block; margin-top: 20px;">
-    No hay datos registrados en este mundo.
-  </ion-note>
+  <!-- Sección de Jugadores (Mantenida discretamente si existe) -->
+  <div *ngIf="mundo.jugadors && mundo.jugadors.length > 0" class="mc-players-section">
+    <h2 class="mc-section-title">JUGADORES</h2>
+    <div class="mc-players-list">
+      <div *ngFor="let j of mundo.jugadors" class="player-item">
+        {{ j.username }} - LVL {{ j.nivel_xp }}
+      </div>
+    </div>
+  </div>
 
-</ion-content>
+</ion-content>

@@ -1,53 +1,52 @@
-<ion-header shadow="none">
-  <ion-toolbar style="--background: #2dd36f; --color: #000;">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cerrar()">
-        <ion-icon name="close-outline" color="dark"></ion-icon>
+      <ion-button (click)="cerrar()" color="success">
+        <ion-icon name="close-outline" style="font-size: 24px; font-weight: 800;"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">
-      {{ soloLectura ? 'Detalles del Item' : (id ? 'Editar Item' : 'Nuevo Item') }}
-    </ion-title>
+    <ion-title class="mc-toolbar-title">ÍTEMS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="--background: #000000;">
-  <form [formGroup]="itemForm" (ngSubmit)="guardarDatos()">
-    <ion-grid>
-      <ion-row>
-        
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px; margin-top: 10px; --padding-top: 12px; --padding-bottom: 12px;">
-            <ion-label position="stacked" color="primary" style="margin-bottom: 10px; font-weight: bold; font-size: 1.1em;">Nombre del Item</ion-label>
-            <ion-input type="text" formControlName="nombre" placeholder="Ej. Pico de Diamante"></ion-input>
-          </ion-item>
-        </ion-col>
+<ion-content>
+  <div class="mc-section-header">
+    <h1 class="mc-title">{{ soloLectura ? 'DETALLES' : (id ? 'EDITAR' : 'NUEVO') }}<br>ÍTEM</h1>
+    <div class="mc-divider"></div>
+  </div>
 
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px; margin-top: 10px; --padding-top: 12px; --padding-bottom: 12px;">
-            <ion-label position="stacked" color="primary" style="margin-bottom: 10px; font-weight: bold; font-size: 1.1em;">Puntos de Ataque</ion-label>
-            <ion-input type="number" formControlName="puntos_ataque"></ion-input>
-          </ion-item>
-        </ion-col>
+  <div class="ion-padding">
+    <form [formGroup]="itemForm" (ngSubmit)="guardarDatos()">
+      
+      <div class="mc-form-group">
+        <label class="mc-label">NOMBRE DEL ÍTEM</label>
+        <ion-input type="text" formControlName="nombre" class="mc-input-field" placeholder="Ej. Pico de Diamante"></ion-input>
+      </div>
 
-        <ion-col size="12">
-          <ion-item style="--background: #1e1e1e; --color: white; border-radius: 8px; margin-top: 10px; --padding-top: 12px; --padding-bottom: 12px;">
-            <ion-label position="stacked" color="primary" style="margin-bottom: 10px; font-weight: bold; font-size: 1.1em;">¿Es apilable?</ion-label>
-            <ion-select formControlName="es_apilable" okText="Elegir" cancelText="Cancelar">
-              <ion-select-option [value]="1">Sí, se puede apilar</ion-select-option>
-              <ion-select-option [value]="0">No, es un ítem único</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
+      <div class="mc-form-group">
+        <label class="mc-label">PUNTOS DE ATAQUE</label>
+        <ion-input type="number" formControlName="puntos_ataque" class="mc-input-field"></ion-input>
+      </div>
 
-        <ion-col size="12" *ngIf="!soloLectura">
-          <ion-button type="submit" [disabled]="!itemForm.valid" color="warning" expand="block" 
-                      style="color: black; font-weight: bold; margin-top: 30px; height: 50px;">
-            {{ id ? 'GUARDAR CAMBIOS' : 'CREAR ÍTEM' }}
-          </ion-button>
-        </ion-col>
+      <div class="mc-form-group">
+        <label class="mc-label">¿ES APILABLE?</label>
+        <ion-select formControlName="es_apilable" interface="popover" placeholder="Seleccionar..." class="mc-select-field">
+          <ion-select-option [value]="1">SÍ, ES APILABLE</ion-select-option>
+          <ion-select-option [value]="0">NO, ES ÚNICO</ion-select-option>
+        </ion-select>
+      </div>
 
-      </ion-row>
-    </ion-grid>
-  </form>
+      <div class="mc-form-actions" *ngIf="!soloLectura">
+        <button type="submit" 
+                [disabled]="!itemForm.valid"
+                class="mc-btn btn-primary">
+          {{ id ? 'GUARDAR CAMBIOS' : 'CREAR ÍTEM' }}
+        </button>
+
+        <button type="button" (click)="cerrar()" class="mc-btn btn-danger">
+          CANCELAR
+        </button>
+      </div>
+    </form>
+  </div>
 </ion-content>

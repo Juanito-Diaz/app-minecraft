@@ -1,0 +1,104 @@
+.mc-section-header {
+  padding: 40px 20px 20px;
+  
+  .mc-title {
+    color: #1a1a1a;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin: 0;
+  }
+
+  .mc-divider {
+    width: 80px;
+    height: 6px;
+    background: #5fff5f;
+    margin-top: 15px;
+  }
+}
+
+.mc-card {
+  background: #f4f4f4;
+  margin: 10px 20px 20px;
+  padding: 30px 20px;
+  border: none;
+  box-shadow: none;
+  border-bottom: 2px solid #e0e0e0;
+
+  .mc-card-header {
+    margin-bottom: 15px;
+  }
+
+  .mc-card-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0;
+    text-transform: none;
+  }
+
+  .mc-card-seed {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    margin: 5px 0;
+  }
+
+  .mc-card-difficulty {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #2a7a4a;
+    text-transform: uppercase;
+    margin: 15px 0 25px;
+  }
+
+  .mc-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .mc-btn {
+      width: 100%;
+      height: 48px;
+      padding: 10px;
+      border: none;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+
+      &.btn-primary {
+        background: #5fff5f;
+        color: #1a1a1a;
+        border-bottom: 4px solid #36d436;
+      }
+
+      &.btn-secondary {
+        background: #b6fbb6;
+        color: #1a1a1a;
+        border-bottom: 4px solid #8cd98c;
+      }
+
+      &.btn-danger {
+        background: #ffdada;
+        color: #1a1a1a;
+        border-bottom: 4px solid #c0392b;
+      }
+
+      &:active {
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+      }
+    }
+  }
+}
+
+ion-content {
+  --background: #fcfcfc;
+}

@@ -1,58 +1,54 @@
-<app-toolbar nombre="Lista de Jugadores" color="tertiary"></app-toolbar>
+<app-toolbar nombre="Jugadores" color="light"></app-toolbar>
 
-<ion-content style="--background: #000;">
+<ion-content>
+  <!-- Cabecera de Sección -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">CONOCE A<br>LOS JUGADORES</h1>
+    <div class="mc-divider"></div>
+  </div>
 
-  <ion-searchbar 
-    [debounce]="1000" 
-    (ionInput)="handleInput($event)" 
-    placeholder="Buscar jugador..."
-    style="--background: #1e1e1e; --color: #ffffff; padding: 10px;">
-  </ion-searchbar>
+  <div class="ion-padding-horizontal">
+    <ion-searchbar 
+      [debounce]="1000" 
+      (ionInput)="handleInput($event)" 
+      placeholder="Buscar jugador..."
+      class="mc-searchbar">
+    </ion-searchbar>
+  </div>
 
-  <ion-list style="background: transparent; padding: 10px;">
-    <ion-item *ngFor="let j of jugadores" 
-              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
+  <!-- Listado -->
+  <div class="mc-container">
+    <div *ngFor="let j of jugadores" class="mc-card">
+      <div class="mc-card-header">
+        <h2 class="mc-card-title">{{ j.username }}</h2>
+      </div>
       
-      <ion-avatar slot="start">
-        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{j.username}}" alt="avatar" />
-      </ion-avatar>
-      
-      <ion-label>
-        <h2 style="font-weight: bold; color: #2dd36f;">{{ j.username }}</h2>
-        <p style="color: #a0a0a0;">Nivel XP: {{ j.nivel_xp || 0 }} | Unido: {{ j.fecha_union | date:'shortDate' }}</p>
-      </ion-label>
+      <p class="mc-card-seed">NIVEL XP: {{ j.nivel_xp || 0 }}</p>
+      <p class="mc-card-seed" style="color: #1b5e20;">UNIDO: {{ j.fecha_union | date:'shortDate' }}</p>
 
-      <ion-buttons slot="end">
-        <ion-button [routerLink]="['/jugadores-detalle', j.id]" fill="clear" style="--color: #3880ff;">
-          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button (click)="editar(j.id)" fill="clear" style="--color: #ffc409;">
-          <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button (click)="alertEliminar(j.id, j.username)" fill="clear" style="--color: #eb445a;">
-          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+      <div class="mc-card-actions" style="margin-top: 15px;">
+        <button class="mc-btn btn-primary" [routerLink]="['/jugadores-detalle', j.id]">
+          VER DETALLES
+        </button>
+        <button class="mc-btn btn-secondary" (click)="editar(j.id)">
+          EDITAR
+        </button>
+        <button class="mc-btn btn-danger" (click)="alertEliminar(j.id, j.username)">
+          ELIMINAR
+        </button>
+      </div>
+    </div>
+  </div>
 
-    </ion-item>
-  </ion-list>
-
-  <div class="ion-padding" style="margin-top: 20px; margin-bottom: 100px;">
-    <app-paginacion 
-      *ngIf="total > 0" 
-      [total]="total" 
-      [porPagina]="20"
-      (click)="pagina($event)">
-    </app-paginacion>
-    
-    <p *ngIf="total === 0" style="color: #666; text-align: center; font-size: 0.9em;">
+  <div class="ion-padding" style="margin-bottom: 80px;">
+    <app-paginacion *ngIf="total > 0" [total]="total" [porPagina]="20" (click)="pagina($event)"></app-paginacion>
+    <p *ngIf="total === 0" style="color: #666; text-align: center; font-size: 0.9em; font-weight: bold;">
       No se encontraron jugadores.
     </p>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="nuevo()" color="tertiary">
-      <ion-icon name="add" color="dark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <!-- FAB Cuadrado Estilo Minecraft -->
+  <div class="mc-fab" (click)="nuevo()">
+    <ion-icon name="add"></ion-icon>
+  </div>
 </ion-content>

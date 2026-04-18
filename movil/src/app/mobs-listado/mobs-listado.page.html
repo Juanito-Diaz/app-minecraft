@@ -1,58 +1,49 @@
-<app-toolbar nombre="Bestiario de Mobs" color="danger"></app-toolbar>
+<app-toolbar nombre="Mobs" color="light"></app-toolbar>
 
-<ion-content style="--background: #000;">
-
-  <ion-searchbar 
-    [debounce]="1000" 
-    (ionInput)="handleInput($event)" 
-    placeholder="Buscar por tipo o comportamiento...">
-  </ion-searchbar>
-  
-  <ion-list style="background: transparent; padding: 10px;">
-    <ion-item *ngFor="let mob of mobs" 
-              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
-      
-      <ion-avatar slot="start" style="background: rgba(255, 68, 68, 0.1); padding: 5px;">
-        <ion-icon [name]="mob.es_hostil ? 'skull' : 'heart'" 
-                  [color]="mob.es_hostil ? 'danger' : 'success'" 
-                  style="font-size: 28px;"></ion-icon>
-      </ion-avatar>
-
-      <ion-label class="ion-text-wrap">
-        <h3 style="color: white; font-weight: bold;">{{ mob.tipo }}</h3>
-        <p style="color: #aaa;">{{ mob.es_hostil ? 'Hostil' : 'Pasivo' }}</p>
-      </ion-label>
-
-      <ion-buttons slot="end">
-        <ion-button [routerLink]="['/mobs-detalle', mob.id]" fill="clear">
-          <ion-icon name="search-outline" style="color: #3880ff; font-size: 20px;"></ion-icon>
-        </ion-button>
-
-        <ion-button (click)="editar(mob.id)" color="warning" fill="clear">
-          <ion-icon name="pencil-outline" style="font-size: 20px;"></ion-icon>
-        </ion-button>
-
-        <ion-button (click)="alertEliminar(mob.id)" color="danger" fill="clear">
-          <ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      
-    </ion-item>
-  </ion-list>
-
-  <div style="margin-bottom: 100px; margin-top: 20px;">
-    <app-paginacion 
-      *ngIf="total > 0"
-      [total]="total" 
-      [porPagina]="20" 
-      (click)="pagina($event)">
-    </app-paginacion>
+<ion-content>
+  <!-- Cabecera de Sección -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">BESTIARIO<br>DE MOBS</h1>
+    <div class="mc-divider"></div>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="new()" style="--background: #ff4444;">
-        <ion-icon name="add" color="dark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <div class="ion-padding-horizontal">
+    <ion-searchbar 
+      [debounce]="1000" 
+      (ionInput)="handleInput($event)" 
+      placeholder="Buscar por tipo o comportamiento..."
+      class="mc-searchbar">
+    </ion-searchbar>
+  </div>
+  
+  <div class="mc-container">
+    <div *ngFor="let mob of mobs" class="mc-card">
+      <div class="mc-card-header">
+        <h2 class="mc-card-title">{{ mob.tipo }}</h2>
+      </div>
+      
+      <p class="mc-card-seed" [style.color]="mob.es_hostil ? '#c0392b' : '#2a7a4a'">COMPORTAMIENTO: {{ mob.es_hostil ? 'HOSTIL' : 'PASIVO' }}</p>
+
+      <div class="mc-card-actions" style="margin-top: 15px;">
+        <button class="mc-btn btn-primary" [routerLink]="['/mobs-detalle', mob.id]">
+          VER DETALLES
+        </button>
+        <button class="mc-btn btn-secondary" (click)="editar(mob.id)">
+          EDITAR
+        </button>
+        <button class="mc-btn btn-danger" (click)="alertEliminar(mob.id)">
+          ELIMINAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 100px; margin-top: 20px;" class="ion-padding">
+    <app-paginacion *ngIf="total > 0" [total]="total" [porPagina]="20" (click)="pagina($event)"></app-paginacion>
+  </div>
+
+  <div class="mc-fab" (click)="new()">
+    <ion-icon name="add"></ion-icon>
+  </div>
 
 </ion-content>

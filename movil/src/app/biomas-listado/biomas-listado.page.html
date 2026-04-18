@@ -1,57 +1,51 @@
-<app-toolbar nombre="Biomas de Minecraft" color="success"></app-toolbar>
+<app-toolbar nombre="Biomas" color="light"></app-toolbar>
 
-<ion-content style="--background: #000000;">
-
-  <ion-searchbar 
-    [debounce]="1000" 
-    (ionInput)="handleInput($event)" 
-    placeholder="Buscar bioma..."
-    style="--background: #1e1e1e; --color: #ffffff; padding: 10px;">
-  </ion-searchbar>
-
-  <ion-list style="background: transparent; padding: 10px;">
-    
-    <ion-item *ngFor="let bioma of biomas" 
-              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
-      
-      <ion-avatar slot="start" style="background: #2dd36f22; padding: 8px;">
-        <ion-icon name="earth-outline" style="font-size: 24px; color: #2dd36f;"></ion-icon>
-      </ion-avatar>
-
-      <ion-label class="ion-text-wrap ion-margin-end">
-        <h3 style="font-weight: bold; color: white;">{{ bioma.nombre }}</h3>
-        <p style="color: #a0a0a0;">Temp: {{ bioma.temperatura }}</p>
-      </ion-label>
-
-      <ion-buttons slot="end">
-        <ion-button [routerLink]="['/biomas-detalle', bioma.id]" fill="clear">
-          <ion-icon name="search-outline" style="color: #3880ff; font-size: 20px;"></ion-icon>
-        </ion-button>
-
-        <ion-button (click)="editar(bioma.id)" color="warning" fill="clear">
-          <ion-icon name="pencil-outline" style="font-size: 20px;"></ion-icon>
-        </ion-button>
-
-        <ion-button (click)="alertEliminar(bioma.id, bioma.nombre)" color="danger" fill="clear">
-          <ion-icon name="trash-outline" style="font-size: 20px;"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-
-    </ion-item>
-  </ion-list>
-
-  <div style="margin-bottom: 100px;"> 
-    <app-paginacion 
-      *ngIf="total > 0"
-      [total]="total" 
-      [porPagina]="20" 
-      (click)="pagina($event)">
-    </app-paginacion>
+<ion-content>
+  <!-- Cabecera de Sección -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">EXPLORA<br>TUS BIOMAS</h1>
+    <div class="mc-divider"></div>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="new()" style="--background: #2dd36f;">
-      <ion-icon name="add" color="dark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <div class="ion-padding-horizontal">
+    <ion-searchbar 
+      [debounce]="1000" 
+      (ionInput)="handleInput($event)" 
+      placeholder="Buscar bioma..."
+      class="mc-searchbar">
+    </ion-searchbar>
+  </div>
+
+  <!-- Listado de Biomas -->
+  <div class="mc-container">
+    <div *ngFor="let bioma of biomas" class="mc-card">
+      <div class="mc-card-header">
+        <h2 class="mc-card-title">{{ bioma.nombre }}</h2>
+      </div>
+      
+      <p class="mc-card-seed">TEMPERATURA: {{ bioma.temperatura }}°C</p>
+
+      <div class="mc-card-actions" style="margin-top: 15px;">
+        <button class="mc-btn btn-primary" [routerLink]="['/biomas-detalle', bioma.id]">
+          VER DETALLES
+        </button>
+        <button class="mc-btn btn-secondary" (click)="editar(bioma.id)">
+          EDITAR
+        </button>
+        <button class="mc-btn btn-danger" (click)="alertEliminar(bioma.id, bioma.nombre)">
+          ELIMINAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginación con estilo ajustado -->
+  <div class="ion-padding" style="margin-bottom: 80px;">
+    <app-paginacion *ngIf="total > 0" [total]="total" [porPagina]="20" (click)="pagina($event)"></app-paginacion>
+  </div>
+
+  <!-- FAB Cuadrado Estilo Minecraft -->
+  <div class="mc-fab" (click)="new()">
+    <ion-icon name="add"></ion-icon>
+  </div>
 </ion-content>

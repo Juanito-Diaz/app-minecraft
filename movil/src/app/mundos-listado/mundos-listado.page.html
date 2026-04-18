@@ -1,45 +1,43 @@
-<app-toolbar nombre="Mundos Globales" color="primary"></app-toolbar>
+<app-toolbar nombre="Mundos" color="light"></app-toolbar>
 
-<ion-content style="--background: #000;">
-  <ion-searchbar 
-    [debounce]="1000" 
-    (ionInput)="handleInput($event)" 
-    placeholder="Buscar mundo..."
-    style="--background: #1e1e1e; --color: #ffffff; padding: 10px;">
-  </ion-searchbar>
+<ion-content>
+  <!-- Cabecera de Sección -->
+  <div class="mc-section-header">
+    <h1 class="mc-title">EXPLORA<br>TUS REINOS</h1>
+    <div class="mc-divider"></div>
+  </div>
 
-  <ion-list style="background: transparent; padding: 10px;">
-    <ion-item *ngFor="let m of mundos" 
-              style="--background: #1e1e1e; --color: #ffffff; margin-bottom: 12px; border-radius: 12px; --border-style: none;">
+  <!-- Listado de Mundos -->
+  <div class="mundos-container">
+    <div *ngFor="let m of mundos" class="mc-card">
+      <div class="mc-card-header">
+        <h2 class="mc-card-title">{{ m.nombre }}</h2>
+      </div>
       
-      <ion-icon name="planet-outline" slot="start" style="color: #4da6ff; font-size: 24px;"></ion-icon>
-      
-      <ion-label>
-        <h2 style="font-weight: bold; color: #4da6ff;">{{ m.nombre }}</h2>
-        <p style="color: #a0a0a0;">Dificultad: {{ m.dificultad }} | Semilla: {{ m.semilla }}</p>
-      </ion-label>
+      <p class="mc-card-seed">SEMILLA: {{ m.semilla }}</p>
+      <p class="mc-card-difficulty">DIFICULTAD: {{ m.dificultad }}</p>
 
-      <ion-buttons slot="end">
-        <ion-button [routerLink]="['/mundos-detalle', m.id]" fill="clear" style="--color: #3880ff;">
-          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button (click)="edit(m.id)" fill="clear" style="--color: #ffc409;">
-          <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button (click)="eliminarMundo(m.id, m.nombre)" fill="clear" style="--color: #eb445a;">
-          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
-  </ion-list>
+      <div class="mc-card-actions">
+        <button class="mc-btn btn-primary" [routerLink]="['/mundos-detalle', m.id]">
+          VER DETALLES
+        </button>
+        <button class="mc-btn btn-secondary" (click)="edit(m.id)">
+          EDITAR
+        </button>
+        <button class="mc-btn btn-danger" (click)="eliminarMundo(m.id, m.nombre)">
+          ELIMINAR
+        </button>
+      </div>
+    </div>
+  </div>
 
-  <div class="ion-padding" style="margin-top: 20px; margin-bottom: 100px;">
+  <!-- Paginación con estilo ajustado -->
+  <div class="ion-padding" style="margin-bottom: 80px;">
     <app-paginacion *ngIf="total > 0" [total]="total" [porPagina]="20" (click)="pagina($event)"></app-paginacion>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button (click)="new()" color="primary">
-      <ion-icon name="add" color="dark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+  <!-- FAB Cuadrado Estilo Minecraft -->
+  <div class="mc-fab" (click)="new()">
+    <ion-icon name="add"></ion-icon>
+  </div>
+</ion-content>

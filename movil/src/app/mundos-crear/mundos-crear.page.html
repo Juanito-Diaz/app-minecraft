@@ -1,42 +1,55 @@
-<ion-header>
-  <ion-toolbar color="success">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cerrar()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-button>
+      <ion-back-button defaultHref="/mundos-listado" color="success" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Configurar Mundo</ion-title>
+    <ion-title class="mc-toolbar-title">MUNDOS</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="mundoForm" (ngSubmit)="guardarDatos()">
-    <ion-list lines="full">
-      <ion-item>
-        <ion-label position="stacked">Nombre del Mundo</ion-label>
-        <ion-input type="text" formControlName="nombre"></ion-input>
-      </ion-item>
+<ion-content>
+  <!-- Cabecera de Formulario -->
+  <div class="mc-section-header">
+    <p class="mc-overline">
+      <ion-icon name="earth-outline"></ion-icon> CONFIGURACIÓN INICIAL
+    </p>
+    <h1 class="mc-title">NUEVO MUNDO</h1>
+  </div>
 
-      <ion-item>
-        <ion-label position="stacked">Semilla (Seed)</ion-label>
-        <ion-input type="text" formControlName="semilla"></ion-input>
-      </ion-item>
+  <div class="ion-padding">
+    <form [formGroup]="mundoForm" (ngSubmit)="guardarDatos()">
+      
+      <div class="mc-form-group">
+        <label class="mc-label">NOMBRE DEL MUNDO</label>
+        <ion-input type="text" formControlName="nombre" class="mc-input-field" placeholder="Ej. Mi Aventura"></ion-input>
+      </div>
 
-      <ion-item>
-        <ion-label>Dificultad</ion-label>
-        <ion-select formControlName="dificultad" interface="popover">
+      <div class="mc-form-group">
+        <label class="mc-label">SEMILLA (SEED)</label>
+        <ion-input type="text" formControlName="semilla" class="mc-input-field" placeholder="123456789"></ion-input>
+      </div>
+
+      <div class="mc-form-group">
+        <label class="mc-label">DIFICULTAD</label>
+        <ion-select formControlName="dificultad" interface="popover" placeholder="Seleccionar..." class="mc-select-field">
           <ion-select-option *ngFor="let d of dificultades" [value]="d.id">
             {{ d.nombre }}
           </ion-select-option>
         </ion-select>
-      </ion-item>
-    </ion-list>
+      </div>
 
-    <div class="ion-padding">
-      <ion-button type="submit" [disabled]="!mundoForm.valid" expand="block" color="success">
-        <ion-icon name="save-outline" slot="start"></ion-icon>
-        GUARDAR MUNDO
-      </ion-button>
-    </div>
-  </form>
-</ion-content>
+      <div class="mc-form-actions">
+        <button type="submit" 
+                [disabled]="!mundoForm.valid"
+                class="mc-btn btn-primary">
+          CREAR MUNDO
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </button>
+
+        <button type="button" (click)="cerrar()" class="mc-btn btn-danger">
+          CANCELAR
+        </button>
+      </div>
+    </form>
+  </div>
+</ion-content>
