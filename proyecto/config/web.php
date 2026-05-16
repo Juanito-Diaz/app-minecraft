@@ -240,6 +240,20 @@ $config = [
                 ],
 
                 // ----------------------------------------------
+                ['class' => 'yii\web\UrlRule', 'pattern' => 'permiso/user/<text:.*>', 'route' => 'permiso/user'],
+                [
+                    'class'      => 'yii\rest\UrlRule',
+                    'controller' => 'permiso',
+                    'tokens' => [
+                        '{id}'  => '<id:\d[\d,]*>',
+                        '{rol}' => '<rol:\w+>'
+                    ],
+                    'extraPatterns' => [
+                        'GET lista-permisos' => 'lista-permisos'
+                    ],
+                ],
+
+                // ----------------------------------------------
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'jugadores-mundos']
             ],
         ],

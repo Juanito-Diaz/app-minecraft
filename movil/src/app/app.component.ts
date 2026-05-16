@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +18,10 @@ export class AppComponent {
     { ruta: '/items-listado', texto: 'Items', icono: 'diamond-outline' } // <-- AGREGADO
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  logout() {
+    localStorage.clear();
+    this.router.navigateByUrl('/', { replaceUrl : true });
+  }
 }

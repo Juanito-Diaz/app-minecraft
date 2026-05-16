@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { LoginService } from '../services/login';
+import { Permiso } from '../services/permiso';
 
 @Component({
   selector: 'app-registro',
@@ -37,7 +38,8 @@ export class RegistroPage implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private alertCtrl: AlertController,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private permisoService: Permiso
   ) { }
 
   ngOnInit() {
@@ -83,7 +85,20 @@ export class RegistroPage implements OnInit {
             localStorage.setItem('token', response?.data);
             localStorage.setItem('sesion', 'login');
             localStorage.setItem('username', registrarData.username);
-            this.router.navigate(['/welcome']);
+            
+            // Obtener permisos
+            this.permisoService.permisos().subscribe(
+                async permisosResponse => {
+                    if (permisosResponse?.data) {
+                        localStorage.setItem('permisos', JSON.stringify(permisosResponse.data));
+                    }
+                    this.router.navigate(['/welcome']);
+                },
+                error => {
+                    console.error('Error obteniendo permisos:', error);
+                    this.alertError();
+                }
+            );
           } else if (response?.data === '') {
             this.alertError();
           }

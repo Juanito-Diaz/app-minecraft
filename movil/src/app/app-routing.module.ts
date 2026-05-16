@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { permisoGuard } from './guard/permiso-guard';
 
 const routes: Routes = [
   {
@@ -9,7 +10,8 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+    canActivate: [permisoGuard]
   },
   {
     path: 'mundos-listado',
@@ -25,7 +27,8 @@ const routes: Routes = [
   },
   {
     path: 'jugadores-listado',
-    loadChildren: () => import('./jugadores-listado/jugadores-listado.module').then( m => m.JugadoresListadoPageModule)
+    loadChildren: () => import('./jugadores-listado/jugadores-listado.module').then( m => m.JugadoresListadoPageModule),
+    canActivate: [permisoGuard]
   },
   {
     path: 'jugadores-detalle/:id',
