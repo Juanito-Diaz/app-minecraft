@@ -92,8 +92,20 @@ export class JugadoresCrearPage implements OnInit {
 
   async getDetalles() {
     try {
-      const res = await axios.get(`${this.baseUrl}/${this.id_jugador}`);
-      this.jugadorForm.patchValue(res.data);
+      const res = await axios.get(`${this.baseUrl}/${this.id_jugador}?expand=mundos`);
+      
+      this.jugadorForm.patchValue({
+        username: res.data.username,
+        nivel_xp: res.data.nivel_xp,
+        fecha_union: res.data.fecha_union
+      });
+
+      if (res.data.mundos && res.data.mundos.length > 0) {
+        this.mundosFA.clear();
+        res.data.mundos.forEach((mundo: any) => {
+          this.mundosFA.push(this.fb.control(mundo.id, Validators.required));
+        });
+      }
     } catch (e) { console.log(e); }
   }
 

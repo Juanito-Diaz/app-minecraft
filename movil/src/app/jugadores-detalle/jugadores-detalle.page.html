@@ -9,10 +9,11 @@
 
 <ion-content *ngIf="jugador">
   <!-- Cabecera Principal -->
-  <div class="mc-detail-header">
+  <div class="mc-detail-header" style="display: flex; align-items: center; gap: 20px;">
+    <img [src]="'http://localhost:8080/imagenes/jugadores/' + (jugador.foto ? jugador.foto : 'jugador_default.png')" alt="avatar" style="width: 80px; height: 80px; border-radius: 10px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
     <div class="mc-header-container">
       <p class="mc-overline">PERFIL DEL JUGADOR</p>
-      <h1 class="mc-main-title">{{ jugador.username }}</h1>
+      <h1 class="mc-main-title" style="margin: 0;">{{ jugador.username }}</h1>
     </div>
   </div>
 
