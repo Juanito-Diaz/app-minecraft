@@ -18,6 +18,7 @@ export class JugadoresCrearPage implements OnInit {
 
   public mundos: any[] = [];
   public mundosCargados = false;
+  archivoSeleccionado: any;
 
   constructor(
     private fb: FormBuilder,
@@ -96,6 +97,32 @@ export class JugadoresCrearPage implements OnInit {
     } catch (e) { console.log(e); }
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files?.[0];
+    if (file) {
+      this.archivoSeleccionado = file;
+    }
+  }
+
+  async subirFoto(id: number | undefined) {
+    if (!this.archivoSeleccionado || !id) return;
+    
+    const formData = new FormData();
+    formData.append('foto', this.archivoSeleccionado);
+    try {
+      await axios({
+        method: 'post',
+        url: this.baseUrl + '/subir-foto/' + id,
+        data: formData,
+        headers: {
+          'Authorization': 'Bearer 100-token'
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async guardarDatos() {
     const esNuevo = !this.id_jugador;
     try {
@@ -109,6 +136,7 @@ export class JugadoresCrearPage implements OnInit {
       const idJugador = esNuevo ? response.data.id : this.id_jugador;
       if (idJugador) {
         this.guardarMundos(idJugador);
+        await this.subirFoto(idJugador);
       }
       
       this.modalCtrl.dismiss(true); // Se envía true para refrescar lista

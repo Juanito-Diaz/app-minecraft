@@ -99,9 +99,11 @@ $config = [
                         'GET total' => 'total',
                         'POST login' => 'login',
                         'POST registrar' => 'registrar',
+                        'POST subir-foto/{id}' => 'subir-foto',
                     ],
                 ],
 
+                ['class' => 'yii\web\UrlRule', 'pattern' => 'jugadores/subir-foto/<id:\d+>', 'route' => 'jugadores/subir-foto'],
                 ['class' => 'yii\web\UrlRule', 'pattern' => 'jugadores/buscar/<text:.*>', 'route' => 'jugadores/buscar'],
                 ['class' => 'yii\web\UrlRule', 'pattern' => 'jugadores/total/<text:.*>', 'route' => 'jugadores/total'],
                 [

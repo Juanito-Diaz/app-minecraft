@@ -18,6 +18,7 @@ use Yii;
  */
 class Jugadores extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $fotoArchivo;
 
 
     /**
@@ -40,9 +41,10 @@ class Jugadores extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfa
             [['nivel_xp'], 'integer'],
             [['fecha_union'], 'safe'],
             [['username'], 'string', 'max' => 50],
-            [['password_hash', 'access_token'], 'string', 'max' => 255],
+            [['password_hash', 'access_token', 'foto'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
+            [['fotoArchivo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, pdf, doc, docx'],
         ];
     }
 

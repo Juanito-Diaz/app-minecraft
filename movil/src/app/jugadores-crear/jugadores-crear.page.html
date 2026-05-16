@@ -33,6 +33,11 @@
         <ion-input type="date" formControlName="fecha_union" class="mc-input-field"></ion-input>
       </div>
 
+      <div class="mc-form-group">
+        <label class="mc-label">AVATAR DEL JUGADOR</label>
+        <input type="file" formControlName="foto" (change)="onFileSelected($event)" accept="image/*" class="mc-input-field" style="padding: 10px;" />
+      </div>
+
       <div class="mc-form-group" *ngIf="mundosCargados">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <label class="mc-label" style="margin-bottom: 0;">MUNDOS</label>

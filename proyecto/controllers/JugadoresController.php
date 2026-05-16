@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider; // Importante para actionBuscar
 use app\models\Jugadores;
 use app\models\LoginForm;
 use app\models\RegistroForm;
+use yii\web\UploadedFile;
+use yii\web\Response;
 use Yii;
 
 class JugadoresController extends ActiveController
@@ -36,7 +38,7 @@ class JugadoresController extends ActiveController
                 \yii\filters\auth\HttpBearerAuth::className(),
             ],
             // CLAVE: Se agregan 'total' y 'buscar' a las excepciones
-            'except' => ['index', 'view', 'total', 'buscar', 'login', 'registrar']
+            'except' => ['index', 'view', 'total', 'buscar', 'login', 'registrar', 'subir-foto']
         ];
 
         return $behaviors;
@@ -113,5 +115,47 @@ class JugadoresController extends ActiveController
             return $model->errors;
         }
         return $token;
+    }
+
+    public function actionSubirFoto($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = Jugadores::findOne(['id' => $id]);
+        
+        if (!$model) {
+            return ['success' => false, 'message' => 'Registro no encontrado'];
+        }
+        
+        $model->fotoArchivo = UploadedFile::getInstanceByName('foto');
+        
+        if (!$model->fotoArchivo) {
+            return ['success' => false, 'message' => 'No se recibió ningún archivo'];
+        }
+        
+        $carpeta = Yii::getAlias('@app/web/imagenes/jugadores/');
+        if (!is_dir($carpeta)) {
+            mkdir($carpeta, 0777, true);
+        }
+        
+        $extension = $model->fotoArchivo->extension;
+        $nombreArchivo = 'jugador_' . $model->id . '_' . time() . '.' . $extension;
+        $rutaCompleta = $carpeta . $nombreArchivo;
+        
+        if ($model->fotoArchivo->saveAs($rutaCompleta)) {
+            $model->foto = $nombreArchivo;
+            if ($model->save(false)) {
+                return [
+                    'success' => true,
+                    'message' => 'Archivo subido correctamente',
+                    'archivo' => $model->foto
+                ];
+            }
+            return [
+                'success' => false,
+                'message' => 'El archivo se guardó, pero no se pudo actualizar la BD'
+            ];
+        }
+        
+        return ['success' => false, 'message' => 'No se pudo guardar el archivo'];
     }
 }
