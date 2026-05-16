@@ -37,7 +37,7 @@ class Jugadores extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfa
         return [
             [['fecha_union'], 'default', 'value' => null],
             [['nivel_xp'], 'default', 'value' => 0],
-            [['username', 'password_hash'], 'required'],
+            [['username'], 'required'],
             [['nivel_xp'], 'integer'],
             [['fecha_union'], 'safe'],
             [['username'], 'string', 'max' => 50],
