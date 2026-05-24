@@ -227,3 +227,225 @@ body {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mc-green: #22c55e;
+    --mc-dark-green: #4ade80;
+    --mc-bg: #121212;
+    --mc-card-bg: #1e1e1e;
+    --mc-text-dark: #f3f4f6;
+    --mc-text-muted: #9ca3af;
+    --mc-text-orange: #f97316;
+    --mc-btn-grey: #2d2d2d;
+    --mc-btn-red: #450a0a;
+    --mc-btn-red-text: #fca5a5;
+    --mc-border-color: #2d2d2d;
+    
+    /* Variables para bloques y detalles */
+    --mc-detail-header-bg: #1a1a1a;
+    --mc-block-white: #1e1e1e;
+    --mc-block-grey: #252525;
+    --mc-block-dark-grey: #2d2d2d;
+    --mc-item-border: #2d2d2d;
+    --mc-text-primary: #f3f4f6;
+    --mc-text-secondary: #e5e7eb;
+    --mc-title-line: #444444;
+  }
+
+  /* Overrides para obligar a todos los componentes a usar el tema oscuro */
+  ion-content {
+    --background: var(--mc-bg) !important;
+  }
+
+  .mc-toolbar-title {
+    color: var(--mc-green) !important;
+  }
+
+  .mc-section-header {
+    .mc-title {
+      color: var(--mc-text-dark) !important;
+    }
+  }
+
+  .mc-card {
+    background: var(--mc-card-bg) !important;
+    border-color: var(--mc-border-color) !important;
+    
+    .mc-card-title {
+      color: var(--mc-text-dark) !important;
+    }
+    
+    .mc-badge {
+      background: var(--mc-btn-grey) !important;
+      color: var(--mc-text-dark) !important;
+    }
+    
+    .mc-card-info {
+      color: var(--mc-text-orange) !important;
+    }
+
+    .mc-card-seed {
+      color: var(--mc-green) !important;
+    }
+    
+    .mc-card-actions {
+      .mc-btn {
+        &.btn-primary {
+          background: var(--mc-green) !important;
+          color: #121212 !important;
+          border-bottom-color: var(--mc-dark-green) !important;
+        }
+        
+        &.btn-secondary {
+          background: #1b4d22 !important;
+          color: var(--mc-green) !important;
+          border-bottom-color: #143518 !important;
+        }
+        
+        &.btn-danger {
+          background: #7f1d1d !important;
+          color: #fca5a5 !important;
+          border-bottom-color: #581c1c !important;
+        }
+      }
+    }
+  }
+
+  .mc-btn {
+    &.btn-grey {
+      background: var(--mc-btn-grey) !important;
+      color: var(--mc-text-muted) !important;
+      border-color: #444444 !important;
+    }
+
+    &.btn-red {
+      background: var(--mc-btn-red) !important;
+      color: var(--mc-btn-red-text) !important;
+      border-color: var(--mc-btn-red-text) !important;
+    }
+    
+    &.btn-primary {
+      background: var(--mc-green) !important;
+      color: #121212 !important;
+      border-color: var(--mc-dark-green) !important;
+      box-shadow: 4px 4px 0px var(--mc-dark-green) !important;
+      
+      &:active {
+        box-shadow: 2px 2px 0px var(--mc-dark-green) !important;
+      }
+    }
+
+    &.btn-danger {
+      background: #2d2d2d !important;
+      color: #f3f4f6 !important;
+      border-color: #444444 !important;
+    }
+  }
+
+  .mc-fab {
+    background: var(--mc-green) !important;
+    border-color: var(--mc-dark-green) !important;
+    
+    ion-icon {
+      color: var(--mc-dark-green) !important;
+    }
+  }
+
+  .mc-searchbar {
+    --background: #1e1e1e !important;
+    --color: var(--mc-text-dark) !important;
+    --placeholder-color: var(--mc-text-muted) !important;
+    --icon-color: var(--mc-text-dark) !important;
+  }
+
+  /* Overrides para pantallas de detalle */
+  .mc-detail-header {
+    background: var(--mc-detail-header-bg) !important;
+    border-left-color: var(--mc-dark-green) !important;
+    
+    .mc-overline {
+      color: #b08e72 !important;
+    }
+
+    .mc-main-title {
+      color: var(--mc-text-dark) !important;
+    }
+  }
+
+  .mc-info-grid {
+    .mc-info-block {
+      &.block-white { background: var(--mc-block-white) !important; }
+      &.block-grey { background: var(--mc-block-grey) !important; }
+      &.block-dark-grey { background: var(--mc-block-dark-grey) !important; }
+
+      .mc-info-label {
+        color: #b08e72 !important;
+      }
+
+      .mc-info-value {
+        color: var(--mc-text-dark) !important;
+      }
+    }
+  }
+
+  .mc-biomas-section, .mc-players-section {
+    .mc-section-title {
+      color: var(--mc-text-dark) !important;
+    }
+
+    .mc-title-line {
+      background: var(--mc-title-line) !important;
+    }
+
+    .mc-biomas-list, .mc-players-list {
+      .bioma-item, .player-item {
+        color: var(--mc-text-secondary) !important;
+        border-bottom-color: var(--mc-item-border) !important;
+      }
+    }
+  }
+
+  /* Overrides para pantallas de creación (Formularios) */
+  .mc-form-group {
+    label, .mc-label {
+      color: #b08e72 !important;
+    }
+
+    .mc-input {
+      --background: #1e1e1e !important;
+      --color: var(--mc-text-dark) !important;
+      border-color: var(--mc-border-color) !important;
+      color: var(--mc-text-dark) !important;
+    }
+
+    .mc-input-field {
+      --background: #1e1e1e !important;
+      --color: var(--mc-text-dark) !important;
+      color: var(--mc-text-dark) !important;
+      border-color: var(--mc-dark-green) !important;
+    }
+
+    .mc-select-field {
+      background: #1e1e1e !important;
+      color: var(--mc-text-dark) !important;
+      border-color: var(--mc-dark-green) !important;
+      
+      &::part(placeholder) {
+        color: var(--mc-text-muted) !important;
+      }
+    }
+
+    ion-select {
+      background: #1e1e1e !important;
+      color: var(--mc-text-dark) !important;
+      border-color: var(--mc-border-color) !important;
+    }
+  }
+
+  /* Títulos e iconos específicos en Login / Registro */
+  h2, p {
+    color: var(--mc-text-dark) !important;
+  }
+}
+
+
