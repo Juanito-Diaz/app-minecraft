@@ -18,6 +18,27 @@ export class AppComponent {
     { ruta: '/items-listado', texto: 'Items', icono: 'diamond-outline' } // <-- AGREGADO
   ];
 
+  get enlacesFiltrados() {
+    const token = localStorage.getItem('token');
+    const permisosStr = localStorage.getItem('permisos');
+    
+    if (!token || !permisosStr) {
+      return [];
+    }
+    
+    try {
+      const permisos = JSON.parse(permisosStr);
+      return this.enlaces.filter((enlace: any) => {
+        // Quita la primera barra '/' de la ruta para compararla con el permiso
+        const vista = enlace.ruta.substring(1);
+        return permisos.includes(vista);
+      });
+    } catch (e) {
+      console.error('Error al analizar permisos en el menú lateral:', e);
+      return [];
+    }
+  }
+
   constructor(private router: Router) {}
 
   logout() {

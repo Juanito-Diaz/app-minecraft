@@ -1,9 +1,5 @@
 ion-menu {
     --width: 280px;
-    
-    ion-content {
-        --background: #121212; // Fondo oscuro profundo
-    }
 }
 
 ion-toolbar {
@@ -19,7 +15,7 @@ ion-title {
 
 ion-item {
     --background: transparent;
-    --color: #ffffff;
+    --color: var(--mc-text-dark);
     --border-radius: 10px;
     margin: 8px 15px;
     font-weight: 500;

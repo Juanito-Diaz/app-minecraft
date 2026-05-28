@@ -6,9 +6,9 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content style="--background: #121212;">
+    <ion-content>
       <ion-list style="background: transparent;">
-        <ion-menu-toggle auto-hide="false" *ngFor="let enlace of enlaces">
+        <ion-menu-toggle auto-hide="false" *ngFor="let enlace of enlacesFiltrados">
           <ion-item [routerLink]="enlace.ruta" routerDirection="root" lines="none" detail="false">
             <ion-icon slot="start" [name]="enlace.icono" style="color: #2dd36f;"></ion-icon>
             <ion-label>{{ enlace.texto }}</ion-label>

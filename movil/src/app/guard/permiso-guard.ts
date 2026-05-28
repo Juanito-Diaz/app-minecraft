@@ -39,6 +39,6 @@ export const permisoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
   });
 
   await alert.present();
-  router.navigate(['/tabs/tab1']); // Redirigir a una ruta segura por defecto
+  router.navigate(['/mundos-listado']); // Redirigir a la ruta segura de mundos por defecto
   return false;
 };
