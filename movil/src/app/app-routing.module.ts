@@ -86,10 +86,7 @@ const routes: Routes = [
     path: 'mobs-crear',
     loadChildren: () => import('./mobs-crear/mobs-crear.module').then( m => m.MobsCrearPageModule)
   },
-  {
-    path: 'welcome',
-    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
-  },
+
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)

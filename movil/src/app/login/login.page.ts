@@ -72,7 +72,7 @@ export class LoginPage implements OnInit {
                     if (permisosResponse?.data) {
                         localStorage.setItem('permisos', JSON.stringify(permisosResponse.data));
                     }
-                    this.router.navigate(['/welcome']);
+                    this.router.navigate(['/mundos-listado']);
                 },
                 error => {
                     console.error('Error obteniendo permisos:', error);
