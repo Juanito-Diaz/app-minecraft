@@ -68,4 +68,19 @@ class Items extends \yii\db\ActiveRecord
         // Permite ver la lista de registros de inventario que contienen este item
         return ['inventarios', 'inventarios.jugador'];
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $user = \Yii::$app->user->identity;
+            if ($user && $user->rol === 'jugador') {
+                $inventario = new \app\models\Inventarios();
+                $inventario->id_jugador = $user->id;
+                $inventario->id_item = $this->id;
+                $inventario->cantidad = 1;
+                $inventario->save(false);
+            }
+        }
+    }
 }

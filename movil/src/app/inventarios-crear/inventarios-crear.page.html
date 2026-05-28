@@ -42,7 +42,7 @@
   </div>
 
   <div class="ion-padding" *ngIf="!soloLectura">
-    <div class="mc-form-group">
+    <div class="mc-form-group" *ngIf="!isPlayer">
       <label class="mc-label">SELECCIONAR JUGADOR</label>
       <ion-select [(ngModel)]="formulario.id_jugador" interface="popover" placeholder="Jugador..." class="mc-select-field">
         <ion-select-option *ngFor="let j of listaJugadores" [value]="j.id">{{ j.username || j.nombre }}</ion-select-option>

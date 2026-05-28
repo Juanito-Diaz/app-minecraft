@@ -14,6 +14,29 @@ class MundosController extends ActiveController
     public $modelClass = 'app\models\Mundos';
     public $enableCsrfValidation = false;
 
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = function ($action) {
+            $user = \Yii::$app->user->identity;
+            $todos = \Yii::$app->request->get('todos');
+            $query = Mundos::find();
+            
+            if ($user && $user->rol === 'jugador' && !$todos) {
+                $query->innerJoin('jugadores_mundos', 'mundos.id = jugadores_mundos.id_mundo')
+                      ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+            }
+            
+            return new \yii\data\ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+        };
+        return $actions;
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -36,8 +59,7 @@ class MundosController extends ActiveController
             'authMethods' => [
                 HttpBearerAuth::className(),
             ],
-            // Agregamos 'buscar' y 'total' a las excepciones para que funcionen sin token si es necesario
-            'except' => ['index', 'view', 'total', 'buscar', 'options']
+            'except' => ['options']
         ];
 
         return $behaviors;
@@ -46,12 +68,19 @@ class MundosController extends ActiveController
     // NUEVA FUNCIÓN: actionBuscar (Exactamente según el manual)
     public function actionBuscar($text)
     {
-        // Filtramos por las columnas reales: nombre, semilla y dificultad
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
+        
         $consulta = Mundos::find()->where([
             'like', 
             new \yii\db\Expression("CONCAT(nombre, ' ', semilla, ' ', dificultad)"), 
             $text
         ]);
+
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $consulta->innerJoin('jugadores_mundos', 'mundos.id = jugadores_mundos.id_mundo')
+                     ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
 
         $mundos = new ActiveDataProvider([
             'query' => $consulta,
@@ -69,10 +98,17 @@ class MundosController extends ActiveController
      */
     public function actionTotal($text = '')
     {
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
         $total = Mundos::find(); // Cambiado de Biomas a Mundos
 
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $total->innerJoin('jugadores_mundos', 'mundos.id = jugadores_mundos.id_mundo')
+                  ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
+
         if ($text != '') {
-            $total = $total->where([
+            $total = $total->andWhere([
                 'like',
                 new \yii\db\Expression("CONCAT(nombre, ' ', semilla, ' ', dificultad)"),
                 $text

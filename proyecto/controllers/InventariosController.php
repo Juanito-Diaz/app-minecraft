@@ -19,7 +19,12 @@ class InventariosController extends ActiveController
         
         // Modificamos el index para usar paginación y cargar relaciones
         $actions['index']['prepareDataProvider'] = function ($action) {
+            $user = \Yii::$app->user->identity;
             $query = Inventarios::find()->with(['jugador', 'item']);
+
+            if ($user && $user->rol === 'jugador') {
+                $query->andWhere(['inventarios.id_jugador' => $user->id]);
+            }
 
             return new ActiveDataProvider([
                 'query' => $query,
@@ -51,7 +56,7 @@ class InventariosController extends ActiveController
             'authMethods' => [
                 \yii\filters\auth\HttpBearerAuth::class,
             ],
-            'except' => ['index', 'view', 'total', 'buscar', 'options']
+            'except' => ['options']
         ];
         
         return $behaviors;
@@ -62,6 +67,7 @@ class InventariosController extends ActiveController
      */
     public function actionBuscar($text)
     {
+        $user = \Yii::$app->user->identity;
         // Usamos joinWith para traer los datos del jugador y poder filtrar por su nombre
         $consulta = Inventarios::find()
             ->joinWith('jugador') 
@@ -70,6 +76,10 @@ class InventariosController extends ActiveController
                 new Expression("CONCAT(inventarios.cantidad, ' ', inventarios.id_jugador, ' ', jugadores.username)"), 
                 $text
             ]);
+
+        if ($user && $user->rol === 'jugador') {
+            $consulta->andWhere(['inventarios.id_jugador' => $user->id]);
+        }
 
         $inventarios = new ActiveDataProvider([
             'query' => $consulta,
@@ -86,10 +96,15 @@ class InventariosController extends ActiveController
      */
     public function actionTotal($text = '')
     {
+        $user = \Yii::$app->user->identity;
         $query = Inventarios::find()->joinWith('jugador');
 
+        if ($user && $user->rol === 'jugador') {
+            $query->andWhere(['inventarios.id_jugador' => $user->id]);
+        }
+
         if ($text != '') {
-            $query->where([
+            $query->andWhere([
                 'like',
                 new Expression("CONCAT(inventarios.cantidad, ' ', inventarios.id_jugador, ' ', jugadores.username)"), 
                 $text

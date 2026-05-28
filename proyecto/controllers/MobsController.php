@@ -14,6 +14,30 @@ class MobsController extends ActiveController
     public $modelClass = 'app\models\Mobs';
     public $enableCsrfValidation = false;
 
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = function ($action) {
+            $user = \Yii::$app->user->identity;
+            $todos = \Yii::$app->request->get('todos');
+            $query = Mobs::find();
+            
+            if ($user && $user->rol === 'jugador' && !$todos) {
+                $query->innerJoin('biomas', 'mobs.id_bioma = biomas.id')
+                      ->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                      ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+            }
+            
+            return new \yii\data\ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+        };
+        return $actions;
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -35,8 +59,7 @@ class MobsController extends ActiveController
             'authMethods' => [
                 HttpBearerAuth::className(),
             ],
-            // CLAVE: 'total' y 'buscar' deben estar exceptuados para la lista inicial
-            'except' => ['index', 'view', 'total', 'buscar', 'options'] 
+            'except' => ['options'] 
         ];
 
         return $behaviors;
@@ -47,17 +70,25 @@ class MobsController extends ActiveController
      */
     public function actionBuscar($text)
     {
-        // Usamos CONCAT con las propiedades reales de tu tabla Mobs
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
+        
         $consulta = Mobs::find()->where([
             'like', 
             new Expression("CONCAT(nombre, ' ', tipo, ' ', es_hostil, ' ', id_bioma)"), 
             $text
         ]);
 
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $consulta->innerJoin('biomas', 'mobs.id_bioma = biomas.id')
+                     ->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                     ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
+
         $mobs = new ActiveDataProvider([
             'query' => $consulta,
             'pagination' => [
-                'pageSize' => 20 // Sincronizado con la paginación de Ionic
+                'pageSize' => 20 
             ],
         ]);
 
@@ -69,10 +100,18 @@ class MobsController extends ActiveController
      */
     public function actionTotal($text = '')
     {
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
         $total = Mobs::find();
 
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $total->innerJoin('biomas', 'mobs.id_bioma = biomas.id')
+                  ->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                  ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
+
         if ($text != '') {
-            $total = $total->where([
+            $total = $total->andWhere([
                 'like',
                 new Expression("CONCAT(nombre, ' ', tipo, ' ', es_hostil, ' ', id_bioma)"),
                 $text

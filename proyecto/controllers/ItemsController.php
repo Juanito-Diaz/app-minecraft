@@ -16,8 +16,17 @@ class ItemsController extends ActiveController
     {
         $actions = parent::actions();
         $actions['index']['prepareDataProvider'] = function ($action) {
+            $user = \Yii::$app->user->identity;
+            $todos = \Yii::$app->request->get('todos');
+            $query = Items::find();
+            
+            if ($user && $user->rol === 'jugador' && !$todos) {
+                $query->innerJoin('inventarios', 'items.id = inventarios.id_item')
+                      ->andWhere(['inventarios.id_jugador' => $user->id]);
+            }
+            
             return new ActiveDataProvider([
-                'query' => Items::find(),
+                'query' => $query,
                 'pagination' => [
                     'pageSize' => 20, 
                 ],
@@ -45,19 +54,26 @@ class ItemsController extends ActiveController
             'authMethods' => [
                 \yii\filters\auth\HttpBearerAuth::class,
             ],
-            'except' => ['index', 'view', 'total', 'buscar', 'options']
+            'except' => ['options']
         ];
         return $behaviors;
     }
 
     public function actionBuscar($text)
     {
-        // CORRECCIÓN: Usamos nombre, es_apilable y puntos_ataque
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
+        
         $consulta = Items::find()->where([
             'like', 
             new \yii\db\Expression("CONCAT(nombre, ' ', es_apilable, ' ', puntos_ataque)"), 
             $text
         ]);
+
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $consulta->innerJoin('inventarios', 'items.id = inventarios.id_item')
+                     ->andWhere(['inventarios.id_jugador' => $user->id]);
+        }
 
         $items = new ActiveDataProvider([
             'query' => $consulta,
@@ -71,10 +87,17 @@ class ItemsController extends ActiveController
 
     public function actionTotal($text = '')
     {
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
         $total = Items::find();
+
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $total->innerJoin('inventarios', 'items.id = inventarios.id_item')
+                  ->andWhere(['inventarios.id_jugador' => $user->id]);
+        }
+
         if ($text != '') {
-            // CORRECCIÓN: Mismo CONCAT que en buscar
-            $total = $total->where([
+            $total = $total->andWhere([
                 'like', 
                 new \yii\db\Expression("CONCAT(nombre, ' ', es_apilable, ' ', puntos_ataque)"), 
                 $text

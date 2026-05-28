@@ -11,13 +11,13 @@
   <!-- Cabecera de Formulario -->
   <div class="mc-section-header">
     <p class="mc-overline">
-      <ion-icon name="earth-outline"></ion-icon> CONFIGURACIÓN INICIAL
     </p>
     <h1 class="mc-title">NUEVO MUNDO</h1>
   </div>
 
   <div class="ion-padding">
-    <form [formGroup]="mundoForm" (ngSubmit)="guardarDatos()">
+    <!-- Formulario para Administrador / Edición -->
+    <form *ngIf="!isPlayer || id_mundo" [formGroup]="mundoForm" (ngSubmit)="guardarDatos()">
       
       <div class="mc-form-group">
         <label class="mc-label">NOMBRE DEL MUNDO</label>
@@ -51,5 +51,33 @@
         </button>
       </div>
     </form>
+
+    <!-- Formulario para Jugador (Unirse a Mundo existente) -->
+    <div *ngIf="isPlayer && !id_mundo">
+      <div class="mc-form-group">
+        <label class="mc-label">SELECCIONAR MUNDO</label>
+        <ion-select [(ngModel)]="selectedMundoId" interface="popover" placeholder="Selecciona un mundo..." class="mc-select-field">
+          <ion-select-option *ngFor="let m of todosMundos" [value]="m.id">
+            {{ m.nombre }} (Semilla: {{ m.semilla || 'N/A' }} - {{ m.dificultad || 'Normal' }})
+          </ion-select-option>
+        </ion-select>
+        <p *ngIf="todosMundos.length === 0" style="color: #ef4444; font-weight: bold; margin-top: 10px;">
+          Ya estás en todos los mundos disponibles en el servidor.
+        </p>
+      </div>
+
+      <div class="mc-form-actions">
+        <button (click)="guardarDatos()" 
+                [disabled]="!selectedMundoId"
+                class="mc-btn btn-primary">
+          UNIRSE AL MUNDO
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </button>
+
+        <button type="button" (click)="cerrar()" class="mc-btn btn-danger">
+          CANCELAR
+        </button>
+      </div>
+    </div>
   </div>
-</ion-content>
+</ion-content>

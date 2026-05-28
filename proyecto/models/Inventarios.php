@@ -77,4 +77,18 @@ class Inventarios extends \yii\db\ActiveRecord
     {
         return ['jugador', 'item'];
     }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            if ($this->isNewRecord && empty($this->id_jugador)) {
+                $user = \Yii::$app->user->identity;
+                if ($user) {
+                    $this->id_jugador = $user->id;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

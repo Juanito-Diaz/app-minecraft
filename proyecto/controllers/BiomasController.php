@@ -14,6 +14,29 @@ class BiomasController extends ActiveController
     public $modelClass = 'app\models\Biomas';
     public $enableCsrfValidation = false; 
 
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = function ($action) {
+            $user = \Yii::$app->user->identity;
+            $todos = \Yii::$app->request->get('todos');
+            $query = Biomas::find();
+            
+            if ($user && $user->rol === 'jugador' && !$todos) {
+                $query->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                      ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+            }
+            
+            return new \yii\data\ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+        };
+        return $actions;
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -36,8 +59,7 @@ class BiomasController extends ActiveController
             'authMethods' => [
                 HttpBearerAuth::className(),
             ],
-            // CLAVE: Agregamos 'total' y 'buscar' a las excepciones
-            'except' => ['index', 'view', 'total', 'buscar', 'options'] 
+            'except' => ['options'] 
         ];
 
         return $behaviors;
@@ -48,12 +70,19 @@ class BiomasController extends ActiveController
      */
     public function actionBuscar($text)
     {
-        // Usamos nombre, temperatura e id_mundo según tu tabla
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
+        
         $consulta = Biomas::find()->where([
             'like', 
             new Expression("CONCAT(nombre, ' ', temperatura, ' ', id_mundo)"), 
             $text
         ]);
+
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $consulta->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                     ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
 
         $biomas = new ActiveDataProvider([
             'query' => $consulta,
@@ -69,10 +98,17 @@ class BiomasController extends ActiveController
      * FUNCIÓN TOTAL: Modificada según el manual con CONCAT
      */
     public function actionTotal($text = '') {
+        $user = \Yii::$app->user->identity;
+        $todos = \Yii::$app->request->get('todos');
         $total = Biomas::find();
         
+        if ($user && $user->rol === 'jugador' && !$todos) {
+            $total->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+                  ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
+        }
+
         if ($text !== '') {
-            $total = $total->where([
+            $total = $total->andWhere([
                 'like', 
                 new Expression("CONCAT(nombre, ' ', temperatura, ' ', id_mundo)"), 
                 $text

@@ -2,7 +2,7 @@
 $pdo = new PDO('mysql:host=127.0.0.1;dbname=minecraftdb', 'root', 'root');
 $sql = "
 INSERT INTO `permiso` (`per_vista`, `per_rol`) VALUES 
-('mundos-eliminar', 'admin'),
+('mundos-eliminar', 'jugador, admin'),
 ('jugadores-eliminar', 'admin'),
 ('inventarios-eliminar', 'jugador, admin'),
 ('items-eliminar', 'jugador, admin'),

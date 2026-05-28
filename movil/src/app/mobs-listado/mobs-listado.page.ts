@@ -102,15 +102,115 @@ export class MobsListadoPage implements OnInit {
   }
 
   async new() {
-    const modal = await this.modalCtrl.create({
-        component: MobsCrearPage,
-        initialBreakpoint: 0.95
-    });
-    await modal.present();
-    modal.onDidDismiss().then(() => {
-      this.cargarTotal();
-      this.cargarMobs();
-    });
+    const isPlayer = localStorage.getItem('username') !== 'admin';
+    if (isPlayer) {
+      const loading = await this.loadingCtrl.create({ message: 'Cargando...' });
+      await loading.present();
+      
+      try {
+        const response = await axios({
+          method: 'get',
+          url: `${this.baseUrl}?todos=true`,
+          withCredentials: true,
+          headers: { 'Accept': 'application/json' }
+        });
+        const todosMobs = response.data;
+        
+        const resB = await axios({
+          method: 'get',
+          url: 'http://localhost:8080/biomas',
+          withCredentials: true,
+          headers: { 'Accept': 'application/json' }
+        });
+        const myBiomas = resB.data;
+        
+        loading.dismiss();
+        
+        if (myBiomas.length === 0) {
+          const emptyAlert = await this.alertCtrl.create({
+            header: 'Agregar Mob',
+            message: 'Primero debes tener al menos un bioma en tus mundos.',
+            buttons: ['OK']
+          });
+          await emptyAlert.present();
+          return;
+        }
+        
+        const inputsMob = todosMobs.map((m: any) => ({
+          type: 'radio',
+          label: `${m.nombre} (${m.tipo})`,
+          value: m
+        }));
+        
+        const alertMob = await this.alertCtrl.create({
+          header: 'Selecciona un Mob',
+          inputs: inputsMob,
+          buttons: [
+            { text: 'Cancelar', role: 'cancel' },
+            {
+              text: 'Siguiente',
+              handler: async (selectedMob: any) => {
+                if (selectedMob) {
+                  const inputsBioma = myBiomas.map((b: any) => ({
+                    type: 'radio',
+                    label: b.nombre,
+                    value: b.id
+                  }));
+                  const alertB = await this.alertCtrl.create({
+                    header: 'Selecciona el Bioma',
+                    message: `¿En qué bioma deseas añadir el mob ${selectedMob.nombre}?`,
+                    inputs: inputsBioma,
+                    buttons: [
+                      { text: 'Cancelar', role: 'cancel' },
+                      {
+                        text: 'Agregar',
+                        handler: async (biomaId: any) => {
+                          if (biomaId) {
+                            try {
+                              await axios({
+                                method: 'post',
+                                url: this.baseUrl,
+                                data: {
+                                  nombre: selectedMob.nombre,
+                                  tipo: selectedMob.tipo,
+                                  es_hostil: selectedMob.es_hostil,
+                                  id_bioma: biomaId
+                                },
+                                withCredentials: true
+                              });
+                              this.cargarTotal();
+                              this.cargarMobs();
+                            } catch (e) {
+                              console.error("Error al clonar mob:", e);
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  });
+                  await alertB.present();
+                  }
+                }
+              }
+            ]
+          });
+          await alertMob.present();
+        
+      } catch (error) {
+        loading.dismiss();
+        console.error(error);
+      }
+    } else {
+      const modal = await this.modalCtrl.create({
+          component: MobsCrearPage,
+          initialBreakpoint: 0.95
+      });
+      await modal.present();
+      modal.onDidDismiss().then(() => {
+        this.cargarTotal();
+        this.cargarMobs();
+      });
+    }
   }
 
   async editar(id: number) {

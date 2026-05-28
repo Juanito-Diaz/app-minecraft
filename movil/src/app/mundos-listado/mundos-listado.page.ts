@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { MundosCrearPage } from '../mundos-crear/mundos-crear.page';
 import { MundosService } from '../services/mundos'; 
+import { JugadoresMundosService } from '../services/jugadores-mundos'; 
 
 import { Permiso } from '../services/permiso';
 
@@ -22,6 +23,7 @@ export class MundosListadoPage implements OnInit {
     private loading: LoadingController,
     private alertCtrl: AlertController,
     private mundosService: MundosService,
+    private jugadoresMundosService: JugadoresMundosService,
     public permisoService: Permiso
   ) {}
 

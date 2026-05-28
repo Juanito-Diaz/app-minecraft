@@ -7,6 +7,8 @@ import { ItemsListadoPage } from './items-listado.page';
 import { ToolbarModule } from '../components/toolbar/toolbar.module';
 import { PaginacionModule } from '../components/paginacion/paginacion.module'; // <-- IMPORTANTE
 
+import { InventariosCrearPage } from '../inventarios-crear/inventarios-crear.page';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -14,7 +16,8 @@ import { PaginacionModule } from '../components/paginacion/paginacion.module'; /
     IonicModule,
     ItemsListadoPageRoutingModule,
     ToolbarModule,
-    PaginacionModule // <-- INYECTAR AQUÍ
+    PaginacionModule,
+    InventariosCrearPage
   ],
   declarations: [ItemsListadoPage]
 })

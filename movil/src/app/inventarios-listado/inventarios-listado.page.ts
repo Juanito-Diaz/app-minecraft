@@ -126,7 +126,6 @@ export class InventariosListadoPage implements OnInit {
     }
   }
 
-  // Modificado para asegurar que el modal refresque la lista al cerrar
   async abrirModalCrear(id: any = undefined) {
     const modal = await this.modalController.create({
       component: InventariosCrearPage,
@@ -136,7 +135,6 @@ export class InventariosListadoPage implements OnInit {
     });
     await modal.present();
     
-    // Escuchamos el cierre del modal
     const { data } = await modal.onDidDismiss();
     if (data) {
       this.cargarTotal();

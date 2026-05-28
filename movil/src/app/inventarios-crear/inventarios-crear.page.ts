@@ -16,6 +16,7 @@ export class InventariosCrearPage implements OnInit {
 
   listaJugadores: any[] = [];
   listaItems: any[] = [];
+  isPlayer: boolean = true;
   
   formulario: any = {
     id_jugador: '',
@@ -31,6 +32,8 @@ export class InventariosCrearPage implements OnInit {
   ) {}
 
   async ngOnInit() {
+    const permisos = JSON.parse(localStorage.getItem('permisos') || '[]');
+    this.isPlayer = !permisos.includes('jugadores-listado');
     await this.cargarCatalogos();
     if (this.id !== undefined) {
       await this.getDetalles();
@@ -43,6 +46,17 @@ export class InventariosCrearPage implements OnInit {
       const resI = await axios.get('http://localhost:8080/items');
       this.listaJugadores = resJ.data;
       this.listaItems = resI.data;
+
+      // Auto-set player ID if new record and user is a player
+      if (this.id === undefined && this.isPlayer) {
+        const username = localStorage.getItem('username');
+        const currentPlayer = this.listaJugadores.find(
+          j => j.username?.toLowerCase() === username?.toLowerCase()
+        );
+        if (currentPlayer) {
+          this.formulario.id_jugador = currentPlayer.id;
+        }
+      }
     } catch (error) { console.error(error); }
   }
 

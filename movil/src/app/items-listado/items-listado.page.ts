@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, AlertController, NavController } from '@ionic/angular';
 import { ItemsService } from '../services/items';
 import { ItemsCrearPage } from '../items-crear/items-crear.page';
-
 import { Permiso } from '../services/permiso';
+import { InventariosCrearPage } from '../inventarios-crear/inventarios-crear.page';
+import axios from 'axios';
 
 @Component({
   selector: 'app-items-listado',
@@ -69,14 +70,28 @@ export class ItemsListadoPage implements OnInit {
 
   // Antes se llamaba 'editar' o 'nuevo', ahora es abrirFormulario
   async abrirFormulario(id?: any) {
-    const modal = await this.modalCtrl.create({
-      component: ItemsCrearPage,
-      componentProps: { id: id } // Enviamos el ID si existe (editar), si no, es nuevo
-    });
-    await modal.present();
-    modal.onDidDismiss().then((res) => { 
-      if (res.data) this.cargarItems(); 
-    });
+    const isPlayer = localStorage.getItem('username') !== 'admin';
+    if (isPlayer && !id) {
+      const modal = await this.modalCtrl.create({
+        component: InventariosCrearPage,
+        componentProps: { id: undefined, soloLectura: false },
+        breakpoints: [0, 0.5, 0.95],
+        initialBreakpoint: 0.95
+      });
+      await modal.present();
+      modal.onDidDismiss().then((res) => { 
+        if (res.data) this.cargarItems(); 
+      });
+    } else {
+      const modal = await this.modalCtrl.create({
+        component: ItemsCrearPage,
+        componentProps: { id: id }
+      });
+      await modal.present();
+      modal.onDidDismiss().then((res) => { 
+        if (res.data) this.cargarItems(); 
+      });
+    }
   }
 
   // Antes se llamaba 'navegar', ahora es irAlDetalle

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, ModalController } from '@ionic/angular';
 import { MundosService } from '../services/mundos';
+import { JugadoresMundosService } from '../services/jugadores-mundos';
 
 @Component({
   selector: 'app-mundos-crear',
@@ -11,6 +12,9 @@ import { MundosService } from '../services/mundos';
 export class MundosCrearPage implements OnInit {
   @Input() id_mundo: any; 
   public mundoForm!: FormGroup;
+  isPlayer: boolean = true;
+  todosMundos: any[] = [];
+  selectedMundoId: any = '';
 
   dificultades = [
     { id: 'Pacífico', nombre: 'Pacífico' },
@@ -23,14 +27,34 @@ export class MundosCrearPage implements OnInit {
     private fb: FormBuilder, 
     private alert: AlertController, 
     private modalCtrl: ModalController,
-    private mundosService: MundosService 
+    private mundosService: MundosService,
+    private jugadoresMundosService: JugadoresMundosService
   ) {}
 
   ngOnInit() {
+    const permisos = JSON.parse(localStorage.getItem('permisos') || '[]');
+    this.isPlayer = !permisos.includes('jugadores-listado');
     this.formulario();
+    
     if (this.id_mundo) { 
         this.getDetalle(); 
+    } else if (this.isPlayer) {
+        this.cargarMundosParaUnirse();
     }
+  }
+
+  private cargarMundosParaUnirse() {
+    this.mundosService.listado('?todos=true').subscribe(
+      (todos: any) => {
+        this.mundosService.listado().subscribe(
+          (misMundos: any) => {
+            this.todosMundos = todos.filter((m: any) => !misMundos.some((my: any) => my.id === m.id));
+          },
+          (err) => console.error("Error al cargar mundos propios:", err)
+        );
+      },
+      (err) => console.error("Error al cargar todos los mundos:", err)
+    );
   }
 
   private formulario() {
@@ -58,6 +82,23 @@ export class MundosCrearPage implements OnInit {
   }
 
   async guardarDatos() {
+    if (this.isPlayer && !this.id_mundo) {
+      if (!this.selectedMundoId) {
+        this.alertMsg('Error', 'Debes seleccionar un mundo.');
+        return;
+      }
+      this.jugadoresMundosService.crear({ id_mundo: this.selectedMundoId }).subscribe(
+        () => { 
+          this.alertMsg('Éxito', 'Te has unido al mundo correctamente.'); 
+        },
+        (error) => { 
+          console.error("Error al unirse al mundo:", error);
+          this.alertMsg('Error', 'No se pudo unir al mundo.');
+        }
+      );
+      return;
+    }
+
     const p = this.id_mundo 
       ? this.mundosService.actualizar(this.id_mundo, this.mundoForm.value)
       : this.mundosService.crear(this.mundoForm.value);
@@ -73,7 +114,7 @@ export class MundosCrearPage implements OnInit {
       header: 'Mundos',
       subHeader: sub,
       message: msg,
-      buttons: [{ text: 'Aceptar', handler: () => this.modalCtrl.dismiss() }]
+      buttons: [{ text: 'Aceptar', handler: () => this.modalCtrl.dismiss(true) }]
     });
     await a.present();
   }
