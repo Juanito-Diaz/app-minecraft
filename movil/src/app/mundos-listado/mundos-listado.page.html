@@ -24,7 +24,7 @@
         <button class="mc-btn btn-secondary" (click)="edit(m.id)">
           EDITAR
         </button>
-        <button class="mc-btn btn-danger" (click)="eliminarMundo(m.id, m.nombre)">
+        <button *ngIf="permisoService.has('mundos-eliminar')" class="mc-btn btn-danger" (click)="eliminarMundo(m.id, m.nombre)">
           ELIMINAR
         </button>
       </div>

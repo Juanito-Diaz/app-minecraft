@@ -33,7 +33,7 @@
         <button class="mc-btn btn-secondary" (click)="abrirModalCrear(inv.id)">
           EDITAR
         </button>
-        <button class="mc-btn btn-danger" (click)="alertEliminar(inv.id)">
+        <button *ngIf="permisoService.has('inventarios-eliminar')" class="mc-btn btn-danger" (click)="alertEliminar(inv.id)">
           ELIMINAR
         </button>
       </div>

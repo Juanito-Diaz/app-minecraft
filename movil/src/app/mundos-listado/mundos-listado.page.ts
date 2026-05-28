@@ -3,6 +3,8 @@ import { ModalController, LoadingController, AlertController } from '@ionic/angu
 import { MundosCrearPage } from '../mundos-crear/mundos-crear.page';
 import { MundosService } from '../services/mundos'; 
 
+import { Permiso } from '../services/permiso';
+
 @Component({
   selector: 'app-mundos-listado',
   templateUrl: './mundos-listado.page.html',
@@ -19,7 +21,8 @@ export class MundosListadoPage implements OnInit {
     private modalCtrl: ModalController, 
     private loading: LoadingController,
     private alertCtrl: AlertController,
-    private mundosService: MundosService 
+    private mundosService: MundosService,
+    public permisoService: Permiso
   ) {}
 
   ngOnInit() { 

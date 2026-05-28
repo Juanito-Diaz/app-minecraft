@@ -32,7 +32,7 @@
         <button class="mc-btn btn-secondary" (click)="editar(bioma.id)">
           EDITAR
         </button>
-        <button class="mc-btn btn-danger" (click)="alertEliminar(bioma.id, bioma.nombre)">
+        <button *ngIf="permisoService.has('biomas-eliminar')" class="mc-btn btn-danger" (click)="alertEliminar(bioma.id, bioma.nombre)">
           ELIMINAR
         </button>
       </div>

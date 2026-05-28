@@ -31,7 +31,7 @@
         <button class="mc-btn btn-secondary" (click)="editar(mob.id)">
           EDITAR
         </button>
-        <button class="mc-btn btn-danger" (click)="alertEliminar(mob.id)">
+        <button *ngIf="permisoService.has('mobs-eliminar')" class="mc-btn btn-danger" (click)="alertEliminar(mob.id)">
           ELIMINAR
         </button>
       </div>

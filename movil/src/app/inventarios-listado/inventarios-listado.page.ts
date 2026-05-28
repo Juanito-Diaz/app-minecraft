@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { InventariosCrearPage } from '../inventarios-crear/inventarios-crear.page';
+import { Permiso } from '../services/permiso';
 import axios from 'axios';
 
 @Component({
@@ -22,7 +23,8 @@ export class InventariosListadoPage implements OnInit {
     private modalController: ModalController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    public permisoService: Permiso
   ) {}
 
   ngOnInit() {

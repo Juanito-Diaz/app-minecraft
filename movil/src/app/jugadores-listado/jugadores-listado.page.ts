@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { JugadoresCrearPage } from '../jugadores-crear/jugadores-crear.page';
+import { Permiso } from '../services/permiso';
 import axios from 'axios';
 
 @Component({
@@ -20,7 +21,8 @@ export class JugadoresListadoPage implements OnInit {
   constructor(
     private modalCtrl: ModalController, 
     private loading: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    public permisoService: Permiso
   ) {}
 
   ngOnInit() { 

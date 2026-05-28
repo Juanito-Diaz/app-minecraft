@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import axios from 'axios';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +40,21 @@ export class AppComponent {
     }
   }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    // Interceptor global de Axios para inyectar el token de Authorization
+    axios.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+  }
 
   logout() {
     localStorage.clear();

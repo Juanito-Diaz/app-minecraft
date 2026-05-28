@@ -39,6 +39,14 @@ class ItemsController extends ActiveController
                 'Access-Control-Allow-Credentials' => true,
             ],
         ];
+
+        $behaviors['authenticator'] = [
+            'class' => \yii\filters\auth\CompositeAuth::class,
+            'authMethods' => [
+                \yii\filters\auth\HttpBearerAuth::class,
+            ],
+            'except' => ['index', 'view', 'total', 'buscar', 'options']
+        ];
         return $behaviors;
     }
 
@@ -73,5 +81,29 @@ class ItemsController extends ActiveController
             ]);
         }
         return $total->count();
+    }
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        if ($action === 'delete') {
+            $user = \Yii::$app->user->identity;
+            if (!$user) {
+                throw new \yii\web\ForbiddenHttpException("No autenticado.");
+            }
+            $userRol = isset($user->rol) ? $user->rol : 'jugador';
+            
+            $permisoNombre = strtolower($this->id) . '-eliminar';
+            $permiso = \app\models\Permiso::findOne(['per_vista' => $permisoNombre]);
+            
+            if ($permiso) {
+                $rolesPermitidos = array_map('trim', explode(',', $permiso->per_rol));
+                if (!in_array($userRol, $rolesPermitidos)) {
+                    throw new \yii\web\ForbiddenHttpException("No tienes permiso para eliminar este elemento.");
+                }
+            } else {
+                throw new \yii\web\ForbiddenHttpException("Acción no permitida.");
+            }
+        }
+        parent::checkAccess($action, $model, $params);
     }
 }
