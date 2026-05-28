@@ -33,7 +33,7 @@
         <button class="mc-btn btn-secondary" (click)="abrirFormulario(item.id)">
           EDITAR
         </button>
-        <button class="mc-btn btn-danger" (click)="alertEliminar(item.id)">
+        <button *ngIf="permisoService.has('items-eliminar')" class="mc-btn btn-danger" (click)="alertEliminar(item.id)">
           ELIMINAR
         </button>
       </div>

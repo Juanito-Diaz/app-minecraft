@@ -65,7 +65,7 @@
           {{ id_jugador ? 'ACTUALIZAR DATOS' : 'CREAR JUGADOR' }}
         </button>
 
-        <button *ngIf="id_jugador" type="button" (click)="alertEliminar(id_jugador)" class="mc-btn btn-danger" style="background:#ffdada; border-bottom:4px solid #c0392b;">
+        <button *ngIf="id_jugador && permisoService.has('jugadores-eliminar')" type="button" (click)="alertEliminar(id_jugador)" class="mc-btn btn-danger" style="background:#ffdada; border-bottom:4px solid #c0392b;">
           ELIMINAR JUGADOR
         </button>
       </div>

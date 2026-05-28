@@ -6,6 +6,8 @@ import axios from 'axios';
 import { MundosService } from '../services/mundos';
 import { JugadoresMundosService } from '../services/jugadores-mundos';
 
+import { Permiso } from '../services/permiso';
+
 @Component({
   selector: 'app-jugadores-crear',
   templateUrl: './jugadores-crear.page.html',
@@ -26,7 +28,8 @@ export class JugadoresCrearPage implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     private mundosService: MundosService,
-    private jugadoresMundosService: JugadoresMundosService
+    private jugadoresMundosService: JugadoresMundosService,
+    public permisoService: Permiso
   ) {}
 
   ngOnInit() {

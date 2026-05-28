@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { BiomasCrearPage } from '../biomas-crear/biomas-crear.page';
+import { Permiso } from '../services/permiso';
 import axios from 'axios';
 
 @Component({
@@ -23,7 +24,8 @@ export class BiomasListadoPage implements OnInit {
     private loadingCtrl: LoadingController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    public permisoService: Permiso
   ) { }
 
   ngOnInit() {

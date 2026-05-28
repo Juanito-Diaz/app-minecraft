@@ -3,6 +3,8 @@ import { LoadingController, ModalController, AlertController, NavController } fr
 import { ItemsService } from '../services/items';
 import { ItemsCrearPage } from '../items-crear/items-crear.page';
 
+import { Permiso } from '../services/permiso';
+
 @Component({
   selector: 'app-items-listado',
   templateUrl: './items-listado.page.html',
@@ -21,7 +23,8 @@ export class ItemsListadoPage implements OnInit {
     private loading: LoadingController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public permisoService: Permiso
   ) { }
 
   ngOnInit() {

@@ -4,6 +4,8 @@ import { ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
 import axios from 'axios';
 
+import { Permiso } from '../services/permiso';
+
 @Component({
   selector: 'app-mobs-crear',
   templateUrl: './mobs-crear.page.html',
@@ -33,7 +35,8 @@ export class MobsCrearPage implements OnInit {
     private formBuilder: FormBuilder,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
-    private router: Router
+    private router: Router,
+    public permisoService: Permiso
   ) { }
 
   async ngOnInit() {
