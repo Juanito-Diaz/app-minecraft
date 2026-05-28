@@ -53,7 +53,10 @@ export class BiomasListadoPage implements OnInit {
         method: 'get',
         url: url,
         withCredentials: true,
-        headers: { 'Accept': 'application/json' }
+        headers: { 
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
       });
       this.total = Number(response.data);
       console.log("Total actualizado:", this.total);
@@ -82,7 +85,10 @@ export class BiomasListadoPage implements OnInit {
             method: 'get',
             url: url,
             withCredentials: true,
-            headers: { 'Accept': 'application/json' }
+            headers: { 
+              'Accept': 'application/json',
+              'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+            }
         });
         this.biomas = response.data;
     } catch (error) {
@@ -121,7 +127,7 @@ export class BiomasListadoPage implements OnInit {
         method: 'delete',
         url: `${this.baseUrl}/${id}`,
         withCredentials: true,
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       this.cargarTotal();
       this.cargarBiomas();
@@ -131,109 +137,15 @@ export class BiomasListadoPage implements OnInit {
   }
 
   async new() {
-    const isPlayer = localStorage.getItem('username') !== 'admin';
-    if (isPlayer) {
-      const loading = await this.loadingCtrl.create({ message: 'Cargando...' });
-      await loading.present();
-      
-      try {
-        const response = await axios({
-          method: 'get',
-          url: `${this.baseUrl}?todos=true`,
-          withCredentials: true,
-          headers: { 'Accept': 'application/json' }
-        });
-        const todosBiomas = response.data;
-        
-        this.mundosService.listado().subscribe(async (myMundos: any) => {
-          loading.dismiss();
-          if (myMundos.length === 0) {
-            const emptyAlert = await this.alertCtrl.create({
-              header: 'Agregar Bioma',
-              message: 'Primero debes unirte a al menos un mundo.',
-              buttons: ['OK']
-            });
-            await emptyAlert.present();
-            return;
-          }
-          
-          const inputsBioma = todosBiomas.map((b: any) => ({
-            type: 'radio',
-            label: `${b.nombre} (Temp: ${b.temperatura})`,
-            value: b
-          }));
-          
-          const alertB = await this.alertCtrl.create({
-            header: 'Selecciona un Bioma',
-            inputs: inputsBioma,
-            buttons: [
-              { text: 'Cancelar', role: 'cancel' },
-              {
-                text: 'Siguiente',
-                handler: async (selectedBioma: any) => {
-                  if (selectedBioma) {
-                    const inputsMundo = myMundos.map((m: any) => ({
-                      type: 'radio',
-                      label: m.nombre,
-                      value: m.id
-                    }));
-                    const alertM = await this.alertCtrl.create({
-                      header: 'Selecciona el Mundo',
-                      message: `¿En qué mundo deseas añadir el bioma ${selectedBioma.nombre}?`,
-                      inputs: inputsMundo,
-                      buttons: [
-                        { text: 'Cancelar', role: 'cancel' },
-                        {
-                          text: 'Agregar',
-                          handler: async (worldId: any) => {
-                            if (worldId) {
-                              try {
-                                await axios({
-                                  method: 'post',
-                                  url: this.baseUrl,
-                                  data: {
-                                    nombre: selectedBioma.nombre,
-                                    temperatura: selectedBioma.temperatura,
-                                    id_mundo: worldId
-                                  },
-                                  withCredentials: true
-                                });
-                                this.cargarTotal();
-                                this.cargarBiomas();
-                              } catch (e) {
-                                console.error("Error al clonar bioma:", e);
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    });
-                    await alertM.present();
-                  }
-                }
-              }
-            ]
-          });
-          await alertB.present();
-        }, (err) => {
-          loading.dismiss();
-          console.error(err);
-        });
-      } catch (error) {
-        loading.dismiss();
-        console.error(error);
-      }
-    } else {
-      const paginaModal = await this.modalCtrl.create({
-          component: BiomasCrearPage,
-          initialBreakpoint: 0.95
-      });
-      await paginaModal.present();
-      paginaModal.onDidDismiss().then(() => {
-        this.cargarTotal();
-        this.cargarBiomas();
-      });
-    }
+    const paginaModal = await this.modalCtrl.create({
+        component: BiomasCrearPage,
+        initialBreakpoint: 0.95
+    });
+    await paginaModal.present();
+    paginaModal.onDidDismiss().then(() => {
+      this.cargarTotal();
+      this.cargarBiomas();
+    });
   }
 
   async editar(id: number) {

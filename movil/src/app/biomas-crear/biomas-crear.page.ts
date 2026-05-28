@@ -6,6 +6,7 @@ import axios from 'axios';
 @Component({
   selector: 'app-biomas-crear',
   templateUrl: './biomas-crear.page.html',
+  styleUrls: ['./biomas-crear.page.scss'],
   standalone: false,
 })
 export class BiomasCrearPage implements OnInit {
@@ -42,9 +43,18 @@ export class BiomasCrearPage implements OnInit {
     }
   }
 
+  private getHeaders() {
+    const token = localStorage.getItem('token') || '100-token';
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
   async cargarMundos() {
     try {
-      const res = await axios.get(this.mundosUrl);
+      const headers = this.getHeaders();
+      const res = await axios.get(this.mundosUrl, { headers });
       this.mundos = res.data;
     } catch (e) { console.log(e); }
   }
@@ -59,7 +69,8 @@ export class BiomasCrearPage implements OnInit {
 
   async getDetalles() {
     try {
-      const response = await axios.get(`${this.baseUrl}/${this.id}`);
+      const headers = this.getHeaders();
+      const response = await axios.get(`${this.baseUrl}/${this.id}`, { headers });
       this.editarDatos = response.data;
       Object.keys(this.editarDatos).forEach((key: any) => {
         const control = this.bioma.get(String(key));
@@ -82,7 +93,7 @@ export class BiomasCrearPage implements OnInit {
         method: metodo,
         url: url,
         data: biomaData,
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: this.getHeaders()
       });
 
       const alert = await this.alert.create({

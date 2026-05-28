@@ -40,7 +40,8 @@ class InventariosController extends ActiveController
     {
         $behaviors = parent::behaviors();
 
-        unset($behaviors['corsFilter']);
+        unset($behaviors['authenticator']);
+
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [

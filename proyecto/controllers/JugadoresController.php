@@ -17,6 +17,21 @@ class JugadoresController extends ActiveController
     public $modelClass = 'app\models\Jugadores';
     public $enableCsrfValidation = false;
 
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = function ($action) {
+            $query = Jugadores::find()->where(['!=', 'username', 'admin']);
+            return new \yii\data\ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20
+                ],
+            ]);
+        };
+        return $actions;
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -54,7 +69,7 @@ class JugadoresController extends ActiveController
             'like', 
             new \yii\db\Expression("CONCAT(username, ' ', nivel_xp, ' ', fecha_union)"), 
             $text
-        ]);
+        ])->andWhere(['!=', 'username', 'admin']);
 
         $jugadores = new ActiveDataProvider([
             'query' => $consulta,
@@ -71,9 +86,9 @@ class JugadoresController extends ActiveController
      */
     public function actionTotal($text = '')
     {
-        $total = Jugadores::find();
+        $total = Jugadores::find()->where(['!=', 'username', 'admin']);
         if ($text != '') {
-            $total = $total->where([
+            $total = $total->andWhere([
                 'like',
                 new \yii\db\Expression("CONCAT(username, ' ', nivel_xp, ' ', fecha_union)"),
                 $text

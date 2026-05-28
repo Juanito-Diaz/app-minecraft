@@ -48,7 +48,10 @@ export class JugadoresListadoPage implements OnInit {
         method: 'get',
         url: url,
         withCredentials: true,
-        headers: { 'Accept': 'application/json' }
+        headers: { 
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
       });
       this.total = Number(response.data);
       console.log("¡Total cargado!", this.total);
@@ -77,7 +80,10 @@ export class JugadoresListadoPage implements OnInit {
         method: 'get',
         url: url,
         withCredentials: true,
-        headers: { 'Accept': 'application/json' }
+        headers: { 
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
       });
       this.jugadores = res.data;
     } catch (e) { 
@@ -130,7 +136,7 @@ export class JugadoresListadoPage implements OnInit {
         method: 'delete',
         url: `${this.baseUrl}/${id}`,
         withCredentials: true,
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       this.cargarTotal();
       this.cargarJugadores(); 

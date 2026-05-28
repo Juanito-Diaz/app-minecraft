@@ -1,5 +1,5 @@
 <?php
-$data = json_encode(['username' => 'admin', 'password' => 'admin123']);
+$data = json_encode(['username' => 'admin', 'password' => '123']);
 $options = [
     'http' => [
         'header'  => "Content-type: application/json\r\n",

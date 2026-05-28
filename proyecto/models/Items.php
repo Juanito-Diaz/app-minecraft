@@ -83,4 +83,16 @@ class Items extends \yii\db\ActiveRecord
             }
         }
     }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        // Eliminar todas las relaciones en inventarios asociadas a este item
+        \app\models\Inventarios::deleteAll(['id_item' => $this->id]);
+
+        return true;
+    }
 }

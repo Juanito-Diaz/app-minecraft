@@ -94,4 +94,22 @@ class Mundos extends \yii\db\ActiveRecord
         // Esto permite que al pedir el mundo, podamos solicitar biomas y jugadors
         return ['biomas', 'jugadors'];
     }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        // Eliminar las relaciones de jugadores con este mundo
+        \app\models\JugadoresMundos::deleteAll(['id_mundo' => $this->id]);
+
+        // Para cada bioma, eliminar sus mobs primero y luego el bioma
+        foreach ($this->biomas as $bioma) {
+            \app\models\Mobs::deleteAll(['id_bioma' => $bioma->id]);
+            $bioma->delete();
+        }
+
+        return true;
+    }
 }

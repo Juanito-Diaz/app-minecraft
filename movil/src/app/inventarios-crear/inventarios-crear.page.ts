@@ -40,10 +40,19 @@ export class InventariosCrearPage implements OnInit {
     }
   }
 
+  private getHeaders() {
+    const token = localStorage.getItem('token') || '100-token';
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
   async cargarCatalogos() {
     try {
-      const resJ = await axios.get('http://localhost:8080/jugadores');
-      const resI = await axios.get('http://localhost:8080/items');
+      const headers = this.getHeaders();
+      const resJ = await axios.get('http://localhost:8080/jugadores', { headers });
+      const resI = await axios.get('http://localhost:8080/items', { headers });
       this.listaJugadores = resJ.data;
       this.listaItems = resI.data;
 
@@ -62,7 +71,8 @@ export class InventariosCrearPage implements OnInit {
 
   async getDetalles() {
     try {
-      const res = await axios.get(`http://localhost:8080/inventarios/${this.id}?expand=jugador,item`);
+      const headers = this.getHeaders();
+      const res = await axios.get(`http://localhost:8080/inventarios/${this.id}?expand=jugador,item`, { headers });
       const data = res.data;
       this.formulario = {
         id_jugador: data.id_jugador,
@@ -77,15 +87,16 @@ export class InventariosCrearPage implements OnInit {
   async guardarDatos() {
     try {
       const url = 'http://localhost:8080/inventarios';
+      const headers = this.getHeaders();
       let response;
 
       if (this.id === undefined) {
-        response = await axios.post(url, this.formulario);
+        response = await axios.post(url, this.formulario, { headers });
         if (response.status === 201 || response.status === 200) {
           this.alertSuccess('Registro Creado', 'La asignación de inventario se guardó correctamente.');
         }
       } else {
-        response = await axios.put(`${url}/${this.id}`, this.formulario);
+        response = await axios.put(`${url}/${this.id}`, this.formulario, { headers });
         if (response.status === 200) {
           this.alertSuccess('Registro Actualizado', 'Los cambios se aplicaron correctamente.');
         }

@@ -38,7 +38,8 @@ class ItemsController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        unset($behaviors['corsFilter']);
+        unset($behaviors['authenticator']);
+        
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [

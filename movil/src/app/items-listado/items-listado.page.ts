@@ -15,7 +15,7 @@ import axios from 'axios';
 export class ItemsListadoPage implements OnInit {
 
   items: any = [];
-  total: number = 0; // Se cambió de totalItems a total
+  total: number = 0; 
   page: number = 1;
   busqueda: string = '';
 
@@ -54,13 +54,11 @@ export class ItemsListadoPage implements OnInit {
   async cargarTotal() {
     try {
       this.itemsService.total(this.busqueda).subscribe(
-        response => { this.total = response; }, // Se cambió a total
+        response => { this.total = response; }, 
         error => { console.error('Error:', error); }
       );
     } catch (error) { console.log(error); }
   }
-
-  // --- MÉTODOS QUE TU HTML ESTÁ PIDIENDO ---
 
   handleInput(event: any) {
     this.busqueda = event.target.value;
@@ -68,33 +66,17 @@ export class ItemsListadoPage implements OnInit {
     this.cargarItems();
   }
 
-  // Antes se llamaba 'editar' o 'nuevo', ahora es abrirFormulario
   async abrirFormulario(id?: any) {
-    const isPlayer = localStorage.getItem('username') !== 'admin';
-    if (isPlayer && !id) {
-      const modal = await this.modalCtrl.create({
-        component: InventariosCrearPage,
-        componentProps: { id: undefined, soloLectura: false },
-        breakpoints: [0, 0.5, 0.95],
-        initialBreakpoint: 0.95
-      });
-      await modal.present();
-      modal.onDidDismiss().then((res) => { 
-        if (res.data) this.cargarItems(); 
-      });
-    } else {
-      const modal = await this.modalCtrl.create({
-        component: ItemsCrearPage,
-        componentProps: { id: id }
-      });
-      await modal.present();
-      modal.onDidDismiss().then((res) => { 
-        if (res.data) this.cargarItems(); 
-      });
-    }
+    const modal = await this.modalCtrl.create({
+      component: ItemsCrearPage,
+      componentProps: { id: id }
+    });
+    await modal.present();
+    modal.onDidDismiss().then((res) => { 
+      if (res.data) this.cargarItems(); 
+    });
   }
 
-  // Antes se llamaba 'navegar', ahora es irAlDetalle
   irAlDetalle(id: any) {
     this.navCtrl.navigateForward(['/items-detalle', id]);
   }

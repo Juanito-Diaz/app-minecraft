@@ -6,11 +6,12 @@ import { ItemsService } from '../services/items';
 @Component({
   selector: 'app-items-crear',
   templateUrl: './items-crear.page.html',
+  styleUrls: ['./items-crear.page.scss'],
   standalone: false,
 })
 export class ItemsCrearPage implements OnInit {
   @Input() id: any; 
-  @Input() soloLectura: boolean = false; // Esta es la propiedad que faltaba
+  @Input() soloLectura: boolean = false; 
 
   public itemForm!: FormGroup;
 
@@ -40,7 +41,6 @@ export class ItemsCrearPage implements OnInit {
     this.itemsService.detalle(this.id).subscribe(
       res => { 
         this.itemForm.patchValue(res); 
-        // Si entramos en modo solo lectura, deshabilitamos el formulario
         if (this.soloLectura) {
           this.itemForm.disable();
         }
@@ -50,7 +50,6 @@ export class ItemsCrearPage implements OnInit {
   }
 
   async guardarDatos() {
-    // Si por alguna razón se intenta guardar en solo lectura, no hacer nada
     if (this.soloLectura) return;
 
     try {
@@ -58,7 +57,7 @@ export class ItemsCrearPage implements OnInit {
       if (this.id === undefined) {
         this.itemsService.crear(item).subscribe(
           response => {
-            if (response?.status == 201) {
+            if (response?.status == 201 || response?.status == 200) {
               this.alertMsg('Éxito', 'Item registrado correctamente');
               this.modalCtrl.dismiss(true);
             }

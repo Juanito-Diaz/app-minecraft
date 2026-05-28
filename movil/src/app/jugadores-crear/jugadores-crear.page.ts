@@ -130,7 +130,7 @@ export class JugadoresCrearPage implements OnInit {
         url: this.baseUrl + '/subir-foto/' + id,
         data: formData,
         headers: {
-          'Authorization': 'Bearer 100-token'
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       });
     } catch (error) {
@@ -145,7 +145,7 @@ export class JugadoresCrearPage implements OnInit {
         method: esNuevo ? 'post' : 'put',
         url: esNuevo ? this.baseUrl : `${this.baseUrl}/${this.id_jugador}`,
         data: this.jugadorForm.value,
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       
       const idJugador = esNuevo ? response.data.id : this.id_jugador;
@@ -173,7 +173,7 @@ export class JugadoresCrearPage implements OnInit {
   async eliminar(id: any) {
     try {
       await axios.delete(`${this.baseUrl}/${id}`, {
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       this.modalCtrl.dismiss().then(() => {
         window.location.reload(); 

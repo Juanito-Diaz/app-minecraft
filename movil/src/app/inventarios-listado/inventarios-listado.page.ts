@@ -50,7 +50,10 @@ export class InventariosListadoPage implements OnInit {
         method: 'get',
         url : url,
         withCredentials: true,
-        headers: { 'Accept': 'application/json' }
+        headers: { 
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
       });
       this.total = 0;
       setTimeout(() => {
@@ -78,7 +81,12 @@ export class InventariosListadoPage implements OnInit {
     await loading.present();
 
     try {
-      const res = await axios.get(url, { withCredentials: true });
+      const res = await axios.get(url, { 
+        withCredentials: true,
+        headers: {
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
+      });
       this.listaInventarios = res.data;
     } catch (error) {
       console.error("Error al obtener inventarios:", error);
@@ -118,7 +126,12 @@ export class InventariosListadoPage implements OnInit {
 
   async eliminar(id: number) {
     try {
-      await axios.delete(`${this.baseUrl}/${id}`, { withCredentials: true });
+      await axios.delete(`${this.baseUrl}/${id}`, { 
+        withCredentials: true,
+        headers: {
+          'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+        }
+      });
       this.cargarTotal(); 
       this.obtenerInventarios();
     } catch (error) {

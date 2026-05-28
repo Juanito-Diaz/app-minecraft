@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import axios from 'axios';
+import { Permiso } from './services/permiso';
 
 @Component({
   selector: 'app-root',
@@ -21,26 +22,16 @@ export class AppComponent {
 
   get enlacesFiltrados() {
     const token = localStorage.getItem('token');
-    const permisosStr = localStorage.getItem('permisos');
-    
-    if (!token || !permisosStr) {
+    if (!token) {
       return [];
     }
-    
-    try {
-      const permisos = JSON.parse(permisosStr);
-      return this.enlaces.filter((enlace: any) => {
-        // Quita la primera barra '/' de la ruta para compararla con el permiso
-        const vista = enlace.ruta.substring(1);
-        return permisos.includes(vista);
-      });
-    } catch (e) {
-      console.error('Error al analizar permisos en el menú lateral:', e);
-      return [];
-    }
+    return this.enlaces.filter((enlace: any) => {
+      const vista = enlace.ruta.substring(1);
+      return this.permisoService.has(vista);
+    });
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public permisoService: Permiso) {
     // Interceptor global de Axios para inyectar el token de Authorization
     axios.interceptors.request.use(
       (config) => {

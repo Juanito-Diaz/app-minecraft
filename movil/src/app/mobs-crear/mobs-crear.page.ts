@@ -9,6 +9,7 @@ import { Permiso } from '../services/permiso';
 @Component({
   selector: 'app-mobs-crear',
   templateUrl: './mobs-crear.page.html',
+  styleUrls: ['./mobs-crear.page.scss'],
   standalone: false,
 })
 export class MobsCrearPage implements OnInit {
@@ -47,9 +48,18 @@ export class MobsCrearPage implements OnInit {
     }
   }
 
+  private getHeaders() {
+    const token = localStorage.getItem('token') || '100-token';
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  }
+
   async cargarBiomas() {
     try {
-      const response = await axios.get(this.biomasUrl);
+      const headers = this.getHeaders();
+      const response = await axios.get(this.biomasUrl, { headers });
       this.biomas = response.data;
     } catch (error) { console.error(error); }
   }
@@ -64,7 +74,8 @@ export class MobsCrearPage implements OnInit {
 
   async getDetalles() {
     try {
-      const response = await axios.get(`${this.baseUrl}/${this.id}`);
+      const headers = this.getHeaders();
+      const response = await axios.get(`${this.baseUrl}/${this.id}`, { headers });
       const editarDatos = response.data;
       this.mob.patchValue({
         tipo: editarDatos.tipo,
@@ -77,15 +88,12 @@ export class MobsCrearPage implements OnInit {
   async guardarDatos() {
     try {
       const datosMob = this.mob?.value;
+      const headers = this.getHeaders();
       if (this.id === undefined) {
-          const response = await axios.post(this.baseUrl, datosMob, {
-            headers: { 'Authorization': 'Bearer 100-token' }
-          });
+          const response = await axios.post(this.baseUrl, datosMob, { headers });
           if (response?.status == 201 || response?.status == 200) this.alertGuardado('Configuración guardada.');
       } else {
-          const response = await axios.put(`${this.baseUrl}/${this.id}`, datosMob, {
-            headers: { 'Authorization': 'Bearer 100-token' }
-          });
+          const response = await axios.put(`${this.baseUrl}/${this.id}`, datosMob, { headers });
           if (response?.status == 200) this.alertGuardado('Configuración actualizada.');
       }
     } catch (error: any) {
@@ -108,9 +116,10 @@ export class MobsCrearPage implements OnInit {
 
   async eliminar(id: string) {
     try {
+      const headers = this.getHeaders();
       const response = await axios.delete(this.baseUrl + '/' + id, {
         withCredentials: true,
-        headers: { 'Authorization': 'Bearer 100-token' }
+        headers: headers
       });
       if (response?.status == 204 || response?.status == 200) {
         this.alertEliminado(id, 'El mob ha sido eliminado correctamente.');

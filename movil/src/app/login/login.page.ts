@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     ],
     'password': [
       { type: 'required', message: 'Contraseña requerida.' },
-      { type: 'minlength', message: 'Contraseña debe contener al menos 8 caracteres.' },
+      { type: 'minlength', message: 'Contraseña debe contener al menos 3 caracteres.' },
     ]
   };
 
@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
         Validators.required
       ])],
       password: ['', Validators.compose([
-        Validators.minLength(8),
+        Validators.minLength(3),
         Validators.maxLength(15),
         Validators.required
       ])],
