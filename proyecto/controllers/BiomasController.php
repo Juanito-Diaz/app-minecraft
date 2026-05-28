@@ -37,7 +37,7 @@ class BiomasController extends ActiveController
                 HttpBearerAuth::className(),
             ],
             // CLAVE: Agregamos 'total' y 'buscar' a las excepciones
-            'except' => ['index', 'view', 'total', 'buscar'] 
+            'except' => ['index', 'view', 'total', 'buscar', 'options'] 
         ];
 
         return $behaviors;

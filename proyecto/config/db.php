@@ -4,7 +4,7 @@ return [
     "class" => "yii\db\Connection",
     "dsn" => "mysql:host=localhost;dbname=minecraftdb",
     "username" => "root",
-    "password" => "television07",
+    "password" => "root",
     "charset" => "utf8",
 
     // Schema cache options (for production environment)

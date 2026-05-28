@@ -9,10 +9,12 @@ import axios from 'axios';
 export class InventariosService {
 
   url: string = `http://localhost:8080/inventarios`;
-  headers: any = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token') || 'Bearer 100-token'
-  };
+  get headers(): any {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (localStorage.getItem('token') || '100-token')
+    };
+  }
 
   constructor() { }
 

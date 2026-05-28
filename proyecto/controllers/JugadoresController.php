@@ -38,7 +38,7 @@ class JugadoresController extends ActiveController
                 \yii\filters\auth\HttpBearerAuth::className(),
             ],
             // CLAVE: Se agregan 'total' y 'buscar' a las excepciones
-            'except' => ['index', 'view', 'total', 'buscar', 'login', 'registrar', 'subir-foto']
+            'except' => ['index', 'view', 'total', 'buscar', 'login', 'registrar', 'subir-foto', 'options']
         ];
 
         return $behaviors;
@@ -89,6 +89,9 @@ class JugadoresController extends ActiveController
         if($model->login()) {
             $user = Jugadores::findOne(['username' => $model->username]);
             $token = $user->access_token;
+        } else {
+            Yii::error("Login failed. Errors: " . print_r($model->errors, true));
+            Yii::error("Body params: " . print_r(Yii::$app->getRequest()->getBodyParams(), true));
         }
         return $token;
     }

@@ -9,17 +9,20 @@ import axios from 'axios';
 export class MobsService {
 
   url: string = `http://localhost:8080/mobs`;
-  headers: any = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token') || 'Bearer 100-token'
-  };
+  private getHeaders() {
+    const token = localStorage.getItem('token') || '100-token';
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  }
 
   constructor() { }
 
   listado(extra: string = '', busqueda: string = ''): Observable<any> {
     let url: string = busqueda === '' ? `${this.url}` + extra : `${this.url}/buscar/` + busqueda + extra;
     return new Observable(observer => {
-      axios.get(url, { withCredentials: true, headers: this.headers })
+      axios.get(url, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response.data);
           observer.complete();
@@ -34,7 +37,7 @@ export class MobsService {
   detalle(id: string | null = '', extra: string = ''): Observable<any> {
     const url = `${this.url}/` + id + extra;
     return new Observable(observer => {
-      axios.get(url, { withCredentials: true, headers: this.headers })
+      axios.get(url, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response.data);
           observer.complete();
@@ -48,7 +51,7 @@ export class MobsService {
 
   crear(mob: any): Observable<any> {
     return new Observable(observer => {
-      axios.post(this.url, mob, { withCredentials: true, headers: this.headers })
+      axios.post(this.url, mob, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response);
           observer.complete();
@@ -63,7 +66,7 @@ export class MobsService {
   actualizar(id: string, mob: any): Observable<any> {
     const url = `${this.url}/${id}`;
     return new Observable(observer => {
-      axios.put(url, mob, { withCredentials: true, headers: this.headers })
+      axios.put(url, mob, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response);
           observer.complete();
@@ -78,7 +81,7 @@ export class MobsService {
   eliminar(id: string): Observable<any> {
     const url = `${this.url}/${id}`;
     return new Observable(observer => {
-      axios.delete(url, { withCredentials: true, headers: this.headers })
+      axios.delete(url, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response);
           observer.complete();
@@ -93,7 +96,7 @@ export class MobsService {
   total(busqueda: string = ''): Observable<any> {
     const url = `${this.url}/total/` + busqueda;
     return new Observable(observer => {
-      axios.get(url, { withCredentials: true, headers: this.headers })
+      axios.get(url, { withCredentials: true, headers: this.getHeaders() })
         .then(response => {
           observer.next(response.data);
           observer.complete();

@@ -37,7 +37,7 @@ class MundosController extends ActiveController
                 HttpBearerAuth::className(),
             ],
             // Agregamos 'buscar' y 'total' a las excepciones para que funcionen sin token si es necesario
-            'except' => ['index', 'view', 'total', 'buscar']
+            'except' => ['index', 'view', 'total', 'buscar', 'options']
         ];
 
         return $behaviors;

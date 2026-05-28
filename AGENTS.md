@@ -146,3 +146,6 @@ The root `package.json` contains only `swiper` (carousel/slider library), which 
 - The backend uses Yii 2 Basic template, suitable for small to medium applications
 - The mobile app targets native platforms via Capacitor (Android/iOS)
 - Both sub-projects have their own dependency management (`composer.json` for PHP, `package.json` for mobile)
+
+Usuario: admin
+Contraseña: admin123

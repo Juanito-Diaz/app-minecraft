@@ -36,7 +36,7 @@ class MobsController extends ActiveController
                 HttpBearerAuth::className(),
             ],
             // CLAVE: 'total' y 'buscar' deben estar exceptuados para la lista inicial
-            'except' => ['index', 'view', 'total', 'buscar'] 
+            'except' => ['index', 'view', 'total', 'buscar', 'options'] 
         ];
 
         return $behaviors;
