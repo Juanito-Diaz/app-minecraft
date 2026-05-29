@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "pdfmake": "^0.3.9",
     "swiper": "^12.1.2"
   }
 }

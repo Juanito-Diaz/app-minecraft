@@ -74,7 +74,7 @@ class InventariosController extends ActiveController
             ->joinWith('jugador') 
             ->where([
                 'like', 
-                new Expression("CONCAT(inventarios.cantidad, ' ', inventarios.id_jugador, ' ', jugadores.username)"), 
+                new Expression("CONCAT_WS(' ', inventarios.cantidad, inventarios.id_jugador, jugadores.username)"), 
                 $text
             ]);
 
@@ -107,7 +107,7 @@ class InventariosController extends ActiveController
         if ($text != '') {
             $query->andWhere([
                 'like',
-                new Expression("CONCAT(inventarios.cantidad, ' ', inventarios.id_jugador, ' ', jugadores.username)"), 
+                new Expression("CONCAT_WS(' ', inventarios.cantidad, inventarios.id_jugador, jugadores.username)"), 
                 $text
             ]);
         }

@@ -74,7 +74,7 @@ class MundosController extends ActiveController
         
         $consulta = Mundos::find()->where([
             'like', 
-            new \yii\db\Expression("CONCAT(nombre, ' ', semilla, ' ', dificultad)"), 
+            new \yii\db\Expression("CONCAT_WS(' ', nombre, semilla, dificultad)"), 
             $text
         ]);
 
@@ -111,7 +111,7 @@ class MundosController extends ActiveController
         if ($text != '') {
             $total = $total->andWhere([
                 'like',
-                new \yii\db\Expression("CONCAT(nombre, ' ', semilla, ' ', dificultad)"),
+                new \yii\db\Expression("CONCAT_WS(' ', nombre, semilla, dificultad)"),
                 $text
             ]);
         }

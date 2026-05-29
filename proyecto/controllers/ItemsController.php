@@ -67,7 +67,7 @@ class ItemsController extends ActiveController
         
         $consulta = Items::find()->where([
             'like', 
-            new \yii\db\Expression("CONCAT(nombre, ' ', es_apilable, ' ', puntos_ataque)"), 
+            new \yii\db\Expression("CONCAT_WS(' ', nombre, es_apilable, puntos_ataque)"), 
             $text
         ]);
 
@@ -100,7 +100,7 @@ class ItemsController extends ActiveController
         if ($text != '') {
             $total = $total->andWhere([
                 'like', 
-                new \yii\db\Expression("CONCAT(nombre, ' ', es_apilable, ' ', puntos_ataque)"), 
+                new \yii\db\Expression("CONCAT_WS(' ', nombre, es_apilable, puntos_ataque)"), 
                 $text
             ]);
         }

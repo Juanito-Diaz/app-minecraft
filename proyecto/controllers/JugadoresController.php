@@ -67,7 +67,7 @@ class JugadoresController extends ActiveController
         // Concatenamos las columnas reales: username, nivel_xp y fecha_union
         $consulta = Jugadores::find()->where([
             'like', 
-            new \yii\db\Expression("CONCAT(username, ' ', nivel_xp, ' ', fecha_union)"), 
+            new \yii\db\Expression("CONCAT_WS(' ', username, nivel_xp, fecha_union)"), 
             $text
         ])->andWhere(['!=', 'username', 'admin']);
 
@@ -90,7 +90,7 @@ class JugadoresController extends ActiveController
         if ($text != '') {
             $total = $total->andWhere([
                 'like',
-                new \yii\db\Expression("CONCAT(username, ' ', nivel_xp, ' ', fecha_union)"),
+                new \yii\db\Expression("CONCAT_WS(' ', username, nivel_xp, fecha_union)"),
                 $text
             ]);
         }

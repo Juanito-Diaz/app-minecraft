@@ -7,6 +7,16 @@
     <div class="mc-divider"></div>
   </div>
 
+  <div class="ion-padding-horizontal">
+    <ion-searchbar 
+      [debounce]="1000" 
+      (ionInput)="handleInput($event)" 
+      placeholder="Buscar mundos..."
+      aria-label="serch text"
+      class="mc-searchbar">
+    </ion-searchbar>
+  </div>
+
   <!-- Listado de Mundos -->
   <div class="mundos-container">
     <div *ngFor="let m of mundos" class="mc-card">

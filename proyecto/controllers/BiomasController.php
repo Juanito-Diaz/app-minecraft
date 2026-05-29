@@ -75,7 +75,7 @@ class BiomasController extends ActiveController
         
         $consulta = Biomas::find()->where([
             'like', 
-            new Expression("CONCAT(nombre, ' ', temperatura, ' ', id_mundo)"), 
+            new Expression("CONCAT_WS(' ', biomas.nombre, biomas.temperatura, biomas.id_mundo)"), 
             $text
         ]);
 
@@ -110,7 +110,7 @@ class BiomasController extends ActiveController
         if ($text !== '') {
             $total = $total->andWhere([
                 'like', 
-                new Expression("CONCAT(nombre, ' ', temperatura, ' ', id_mundo)"), 
+                new Expression("CONCAT_WS(' ', biomas.nombre, biomas.temperatura, biomas.id_mundo)"), 
                 $text
             ]);
         }

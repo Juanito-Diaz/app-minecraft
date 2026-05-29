@@ -73,15 +73,14 @@ class MobsController extends ActiveController
         $user = \Yii::$app->user->identity;
         $todos = \Yii::$app->request->get('todos');
         
-        $consulta = Mobs::find()->where([
+        $consulta = Mobs::find()->joinWith('bioma')->where([
             'like', 
-            new Expression("CONCAT(nombre, ' ', tipo, ' ', es_hostil, ' ', id_bioma)"), 
+            new Expression("CONCAT_WS(' ', biomas.nombre, mobs.tipo, mobs.es_hostil, mobs.id_bioma)"), 
             $text
         ]);
 
         if ($user && $user->rol === 'jugador' && !$todos) {
-            $consulta->innerJoin('biomas', 'mobs.id_bioma = biomas.id')
-                     ->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+            $consulta->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
                      ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
         }
 
@@ -102,18 +101,17 @@ class MobsController extends ActiveController
     {
         $user = \Yii::$app->user->identity;
         $todos = \Yii::$app->request->get('todos');
-        $total = Mobs::find();
+        $total = Mobs::find()->joinWith('bioma');
 
         if ($user && $user->rol === 'jugador' && !$todos) {
-            $total->innerJoin('biomas', 'mobs.id_bioma = biomas.id')
-                  ->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
+            $total->innerJoin('jugadores_mundos', 'biomas.id_mundo = jugadores_mundos.id_mundo')
                   ->andWhere(['jugadores_mundos.id_jugador' => $user->id]);
         }
 
         if ($text != '') {
             $total = $total->andWhere([
                 'like',
-                new Expression("CONCAT(nombre, ' ', tipo, ' ', es_hostil, ' ', id_bioma)"),
+                new Expression("CONCAT_WS(' ', biomas.nombre, mobs.tipo, mobs.es_hostil, mobs.id_bioma)"),
                 $text
             ]);
         }
