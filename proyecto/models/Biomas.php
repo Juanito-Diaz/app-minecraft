@@ -79,4 +79,16 @@ class Biomas extends \yii\db\ActiveRecord
         // Esto permite que al consultar el bioma, podamos expandir sus mobs y su mundo padre
         return ['mobs', 'mundo'];
     }
+
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+
+        // Eliminar todos los mobs asociados a este bioma
+        \app\models\Mobs::deleteAll(['id_bioma' => $this->id]);
+
+        return true;
+    }
 }

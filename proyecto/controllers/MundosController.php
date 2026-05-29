@@ -17,6 +17,7 @@ class MundosController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
+        unset($actions['delete']); // Desactivar la acción delete por defecto REST
         $actions['index']['prepareDataProvider'] = function ($action) {
             $user = \Yii::$app->user->identity;
             $todos = \Yii::$app->request->get('todos');
@@ -117,6 +118,46 @@ class MundosController extends ActiveController
         return $total->count();
     }
 
+    public function actionDelete($id)
+    {
+        $user = \Yii::$app->user->identity;
+        if (!$user) {
+            throw new \yii\web\ForbiddenHttpException("No autenticado.");
+        }
+        
+        $userRol = isset($user->rol) ? $user->rol : 'jugador';
+        
+        if ($userRol === 'jugador') {
+            // El jugador sólo se desvincula de este mundo (elimina la relación en jugadores_mundos)
+            $relacion = \app\models\JugadoresMundos::findOne(['id_jugador' => $user->id, 'id_mundo' => $id]);
+            if ($relacion) {
+                if ($relacion->delete() === false) {
+                    throw new \yii\web\ServerErrorHttpException("No se pudo desvincular del mundo.");
+                }
+            }
+            \Yii::$app->response->statusCode = 204;
+            return null;
+        } else {
+            // El administrador elimina el mundo completo de la base de datos física
+            $model = $this->findModel($id);
+            $this->checkAccess('delete', $model);
+            if ($model->delete() === false) {
+                throw new \yii\web\ServerErrorHttpException("No se pudo eliminar el mundo.");
+            }
+            \Yii::$app->response->statusCode = 204;
+            return null;
+        }
+    }
+
+    protected function findModel($id)
+    {
+        $modelClass = $this->modelClass;
+        if (($model = $modelClass::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new \yii\web\NotFoundHttpException("El mundo no existe.");
+    }
+
     public function checkAccess($action, $model = null, $params = [])
     {
         if ($action === 'delete') {
@@ -125,6 +166,12 @@ class MundosController extends ActiveController
                 throw new \yii\web\ForbiddenHttpException("No autenticado.");
             }
             $userRol = isset($user->rol) ? $user->rol : 'jugador';
+            
+            // Si es un jugador, no arrojamos ForbiddenHttpException para delete
+            // puesto que actionDelete() desviará la acción a desvinculación
+            if ($userRol === 'jugador') {
+                return;
+            }
             
             $permisoNombre = strtolower($this->id) . '-eliminar';
             $permiso = \app\models\Permiso::findOne(['per_vista' => $permisoNombre]);
